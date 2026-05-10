@@ -20,7 +20,7 @@ public class GlobalExceptionHandler {
 		response.setException(null);
 		return response;
 	}
-	
+
 	@ExceptionHandler(DuplicateResourceException.class)
 	public JsonResponseEntity<?> handleDuplicateResourceException(final DuplicateResourceException exception) {
 		JsonResponseEntity<?> response = new JsonResponseEntity<>();
@@ -28,6 +28,17 @@ public class GlobalExceptionHandler {
 		response.setResult(null);
 		response.setMessage(exception.getMessage());
 		response.setStatusCode(HttpStatus.BAD_REQUEST);
+		response.setException(null);
+		return response;
+	}
+
+	@ExceptionHandler(ResourceNotFoundException.class)
+	public JsonResponseEntity<?> handleResourceNotFoundException(final ResourceNotFoundException exception) {
+		JsonResponseEntity<?> response = new JsonResponseEntity<>();
+		response.setStatus(StringConstants.failed);
+		response.setResult(null);
+		response.setMessage(exception.getMessage());
+		response.setStatusCode(HttpStatus.NOT_FOUND);
 		response.setException(null);
 		return response;
 	}

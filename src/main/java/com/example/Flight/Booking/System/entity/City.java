@@ -20,5 +20,5 @@ public class City extends BaseEntity {
 	private String cityName;
 
 	@Column(name = "country_id", nullable = false)
-	private Integer countryId;
+	private Long countryId;
 }

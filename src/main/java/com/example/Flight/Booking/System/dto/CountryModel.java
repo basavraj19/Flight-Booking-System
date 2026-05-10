@@ -11,8 +11,10 @@ import lombok.Setter;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CountryRequestDto {
+public class CountryModel {
 
+	private Long recordId;
+	
 	private String countryCode;
 
 	private String countryName;

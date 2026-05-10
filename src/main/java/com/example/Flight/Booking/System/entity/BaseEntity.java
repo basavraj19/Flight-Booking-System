@@ -31,7 +31,7 @@ public class BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+	private Long id;
 
 	@Column(name = "created_by", updatable = false)
 	@CreatedBy
