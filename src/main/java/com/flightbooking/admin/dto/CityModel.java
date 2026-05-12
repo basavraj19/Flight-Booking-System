@@ -14,6 +14,8 @@ import lombok.Setter;
 public class CityModel {
 
 	private Long recordId;
+	
+	private String cityCode;
 
 	private String cityName;
 

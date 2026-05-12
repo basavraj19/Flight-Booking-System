@@ -13,6 +13,7 @@ import com.flightbooking.admin.exception.DuplicateResourceException;
 import com.flightbooking.admin.exception.InvalidInputException;
 import com.flightbooking.admin.exception.ResourceNotFoundException;
 import com.flightbooking.admin.repository.CountryRepository;
+import com.flightbooking.admin.util.NumericConstants;
 
 @Service
 public class CountryService {
@@ -25,7 +26,8 @@ public class CountryService {
 
 		String countryCode = record.getCountryCode().trim().toUpperCase();
 
-		if (!StringUtils.hasText(countryCode) || countryCode.length() < 2) {
+		if (!StringUtils.hasText(countryCode)
+				|| !(countryCode.length() >= NumericConstants.THREE && countryCode.length() <= NumericConstants.TEN)) {
 			throw new InvalidInputException("Invalid Country Code.");
 		}
 
@@ -50,7 +52,8 @@ public class CountryService {
 	public Country getCountryDetailsByCountryCode(final String countryCode) {
 		String validCountryCode = countryCode.trim().toUpperCase();
 
-		if (!StringUtils.hasText(validCountryCode) || validCountryCode.length() < 2) {
+		if (!StringUtils.hasText(validCountryCode) || !(validCountryCode.length() >= NumericConstants.THREE
+				&& validCountryCode.length() <= NumericConstants.TEN)) {
 			throw new InvalidInputException("Invalid Country Code.");
 		}
 
@@ -83,7 +86,8 @@ public class CountryService {
 			throw new InvalidInputException("Invalid Id.");
 		}
 
-		if (!StringUtils.hasText(countryCode) || countryCode.length() < 2) {
+		if (!StringUtils.hasText(countryCode)
+				|| !(countryCode.length() >= NumericConstants.THREE && countryCode.length() <= NumericConstants.TEN)) {
 			throw new InvalidInputException("Invalid Country Code.");
 		}
 

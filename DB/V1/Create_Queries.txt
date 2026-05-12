@@ -1,4 +1,4 @@
-CREATE DATABASE FLIGHT_BOOKING
+CREATE DATABASE FLIGHT_BOOKING;
 
 CREATE TABLE user_account (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
@@ -24,7 +24,7 @@ CREATE TABLE user_account (
 CREATE TABLE COUNTRY (
   id BIGINT AUTO_INCREMENT PRIMARY KEY,
   
-  country_code CHAR(2) NOT NULL,
+  country_code VARCHAR(10) NOT NULL,
   country_name VARCHAR(255) NOT NULL,
   
   created_by VARCHAR(255) NOT NULL,
@@ -40,7 +40,9 @@ CREATE TABLE COUNTRY (
 CREATE TABLE CITY (
   id BIGINT AUTO_INCREMENT PRIMARY KEY,
   
+  city_code VARCHAR(10) NOT NULL,
   city_name VARCHAR(255) NOT NULL,
+  
   country_id BIGINT NOT NULL, 
   
   created_by VARCHAR(255) NOT NULL,
@@ -48,8 +50,8 @@ CREATE TABLE CITY (
 
   modified_by VARCHAR(255) NOT NULL,
   modified_at TIMESTAMP NOT NULL,
- 
-  CONSTRAINT uk_country_name UNIQUE (city_name),
+
+  CONSTRAINT uk_city_code UNIQUE (city_code),
   CONSTRAiNT fk_country_id FOREIGN KEY (country_id) REFERENCES COUNTRY (id) 
 );
 
@@ -84,6 +86,7 @@ CREATE TABLE AIRLINE (
   CONSTRAINT uk_airline_name UNIQUE (airline_name)
 );
 
+
 CREATE TABLE SEAT_TYPE (
  id BIGINT AUTO_INCREMENT PRIMARY KEY,
  
@@ -99,7 +102,7 @@ CREATE TABLE SEAT_TYPE (
  );
  
  
- CREATE TABLE FLIGHT  (
+CREATE TABLE FLIGHT  (
 id BIGINT AUTO_INCREMENT PRIMARY KEY,
 flight_number VARCHAR(255) NOT NULL,
 airline_id BIGINT NOT NULL,
@@ -133,7 +136,7 @@ CREATE TABLE FLIGHT_SEAT_CAPACITY (
    );
    
    
-   CREATE TABLE flight_schedule (
+  CREATE TABLE flight_schedule (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
 
     flight_id BIGINT NOT NULL,
@@ -215,4 +218,3 @@ CREATE TABLE booking_passenger (
     CONSTRAINT fk_passenger_booking
         FOREIGN KEY (booking_id) REFERENCES booking (id)
 );
-

@@ -19,4 +19,6 @@ public class StringConstants {
 	public static String requestFailedMessage = "Something Went Wrong.";
 
 	public static final String COUNTRY_CODE = "countryCode";
+
+	public static final String CITY_CODE = "cityCode";
 }

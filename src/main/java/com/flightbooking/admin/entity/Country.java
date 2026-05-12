@@ -16,7 +16,7 @@ import lombok.experimental.SuperBuilder;
 @Entity
 public class Country extends BaseEntity {
 
-	@Column(name = "country_code", unique = true, nullable = false)
+	@Column(name = "country_code", unique = true, nullable = false, length = 10)
 	private String countryCode;
 
 	@Column(name = "country_name", unique = true, nullable = false)

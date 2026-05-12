@@ -15,8 +15,11 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @Entity
 public class City extends BaseEntity {
+	
+	@Column(name = "city_code", unique = true, nullable = false, length = 10)
+	private String cityCode;
 
-	@Column(name = "city_name", unique = true, nullable = false)
+	@Column(name = "city_name", nullable = false)
 	private String cityName;
 
 	@Column(name = "country_id", nullable = false)
