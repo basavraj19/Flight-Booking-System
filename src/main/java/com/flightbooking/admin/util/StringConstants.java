@@ -13,8 +13,10 @@ public class StringConstants {
 	public static String recordUpdateSuccessMessage = "Record Updated Successfully.";
 
 	public static String recordUpdateFailedMessage = "Failed to Update record.";
-	
+
 	public static String recordFetchSuccessMessage = "Record Fetched Successfully.";
 
 	public static String requestFailedMessage = "Something Went Wrong.";
+
+	public static final String COUNTRY_CODE = "countryCode";
 }

@@ -12,6 +12,6 @@ public interface CountryRepository extends JpaRepository<Country, Long> {
 
 	Country findBycountryCode(String countryCode);
 
-	@Query("select c.id from Country c where c.id = :countryCode")
+	@Query("select c.id from Country c where c.countryCode = :countryCode")
 	Long getIdByCountryCode(@Param("countryCode") final String countryCode);
 }

@@ -1,8 +1,9 @@
 package com.flightbooking.admin.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
@@ -19,10 +20,12 @@ public class CountryService {
 	@Autowired
 	private CountryRepository countryRepository;
 
-	@Transactional(propagation = Propagation.REQUIRED)
-	public Country saveNewCountryDetails(final CountryModel record) throws Exception {
+	@Transactional
+	public Country saveNewCountryDetails(final CountryModel record) {
 
-		if (!StringUtils.hasText(record.getCountryCode()) || record.getCountryCode().length() < 2) {
+		String countryCode = record.getCountryCode().trim().toUpperCase();
+
+		if (!StringUtils.hasText(countryCode) || countryCode.length() < 2) {
 			throw new InvalidInputException("Invalid Country Code.");
 		}
 
@@ -30,45 +33,57 @@ public class CountryService {
 			throw new InvalidInputException("Invalid Country Name.");
 		}
 
-		Country existingRecord = countryRepository.findBycountryCode(record.getCountryCode());
+		Country existingRecord = countryRepository.findBycountryCode(countryCode);
 
 		if (existingRecord != null) {
 			throw new DuplicateResourceException("Country Already Exists.");
 		}
 
-		Country newCountry = Country.builder().countryCode(record.getCountryCode()).countryName(record.getCountryName())
+		Country newCountry = Country.builder().countryCode(countryCode).countryName(record.getCountryName())
 				.createdBy(record.getCreatedBy()).modifiedBy(record.getModifiedBy()).build();
 
-		try {
-			newCountry = countryRepository.save(newCountry);
-		} catch (Exception e) {
-			throw new Exception(e);
-		}
+		newCountry = countryRepository.save(newCountry);
 
 		return newCountry;
 	}
 
-	public Country getCountryDetailsByCountryCode(final String countryCode) throws Exception {
-		if (!StringUtils.hasText(countryCode) || countryCode.length() < 2) {
+	public Country getCountryDetailsByCountryCode(final String countryCode) {
+		String validCountryCode = countryCode.trim().toUpperCase();
+
+		if (!StringUtils.hasText(validCountryCode) || validCountryCode.length() < 2) {
 			throw new InvalidInputException("Invalid Country Code.");
 		}
 
-		Country record = countryRepository.findBycountryCode(countryCode);
+		Country record = countryRepository.findBycountryCode(validCountryCode);
 
 		if (record == null) {
-			throw new ResourceNotFoundException("Country with code " + countryCode + " doesn't exists.");
+			throw new ResourceNotFoundException("Country with code " + validCountryCode + " does not exists.");
 		}
 
 		return record;
 	}
 
-	public Country updateDetails(final CountryModel record) throws Exception {
+	public List<Country> getAllCountryDetails() {
+
+		List<Country> record = countryRepository.findAll();
+
+		if (record.isEmpty()) {
+			throw new ResourceNotFoundException("No Data found.");
+		}
+
+		return record;
+	}
+
+	@Transactional
+	public Country updateDetails(final CountryModel record) {
+
+		String countryCode = record.getCountryCode().trim().toUpperCase();
 
 		if (record.getRecordId() <= 0) {
 			throw new InvalidInputException("Invalid Id.");
 		}
 
-		if (!StringUtils.hasText(record.getCountryCode()) || record.getCountryCode().length() < 2) {
+		if (!StringUtils.hasText(countryCode) || countryCode.length() < 2) {
 			throw new InvalidInputException("Invalid Country Code.");
 		}
 
@@ -77,9 +92,9 @@ public class CountryService {
 		}
 
 		Country existingRecord = countryRepository.findById(record.getRecordId())
-				.orElseThrow(() -> new ResourceNotFoundException("Country doesn't exists."));
+				.orElseThrow(() -> new ResourceNotFoundException("Country does not exists."));
 
-		existingRecord.setCountryCode(record.getCountryCode());
+		existingRecord.setCountryCode(countryCode);
 		existingRecord.setCountryName(record.getCountryName());
 
 		Country updateRecord = countryRepository.save(existingRecord);
