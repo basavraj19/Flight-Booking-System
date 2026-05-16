@@ -8,4 +8,5 @@ import com.flightbooking.admin.entity.Airport;
 @Repository
 public interface AirportRepository extends JpaRepository<Airport, Integer> {
 
+	boolean existsByAirportCode(String airportCode);
 }

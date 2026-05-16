@@ -21,4 +21,12 @@ public class UrlConstants {
 	public static final String FETCH_CITIES_BY_COUNTRY = "/fetchCitiesByCountry";
 
 	public static final String UPDATE_CITY_DETAILS = "/updateCityDetails";
+
+	public static final String AIRLINE = "/airline";
+
+	public static final String CREATE_NEW_AIRLINE = "/create";
+
+	public static final String AIRPORT = "/airport";
+
+	public static final String CREATE_NEW_AIRPORT = "/create";
 }

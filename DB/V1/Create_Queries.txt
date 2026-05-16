@@ -24,7 +24,7 @@ CREATE TABLE user_account (
 CREATE TABLE COUNTRY (
   id BIGINT AUTO_INCREMENT PRIMARY KEY,
   
-  country_code VARCHAR(10) NOT NULL,
+  country_code VARCHAR(3) NOT NULL,
   country_name VARCHAR(255) NOT NULL,
   
   created_by VARCHAR(255) NOT NULL,
@@ -52,13 +52,16 @@ CREATE TABLE CITY (
   modified_at TIMESTAMP NOT NULL,
 
   CONSTRAINT uk_city_code UNIQUE (city_code),
+  CONSTRAINT uk_city_name_country UNIQUE (city_name, country_id),
   CONSTRAiNT fk_country_id FOREIGN KEY (country_id) REFERENCES COUNTRY (id) 
 );
 
 CREATE TABLE AIRPORT (
    id BIGINT AUTO_INCREMENT PRIMARY KEY,
    
+   airport_code VARCHAR(3) NOT NULL,
    airport_name VARCHAR(255) NOT NULL,
+   
    city_id BIGINT NOT NULL, 
    
    created_by VARCHAR(255) NOT NULL,
@@ -67,7 +70,8 @@ CREATE TABLE AIRPORT (
    modified_by VARCHAR(255) NOT NULL,
    modified_at TIMESTAMP NOT NULL,
    
-   CONSTRAINT uk_airport_name UNIQUE (airport_name),
+   CONSTRAINT uk_airport_name_city UNIQUE (airport_name, city_id),
+   CONSTRAINT uk_airport_code UNIQUE (airport_code),
    CONSTRAINT fk_city_id FOREIGN KEY (city_id) references City (id)
 );
 
@@ -104,7 +108,8 @@ CREATE TABLE SEAT_TYPE (
  
 CREATE TABLE FLIGHT  (
 id BIGINT AUTO_INCREMENT PRIMARY KEY,
-flight_number VARCHAR(255) NOT NULL,
+
+flight_number VARCHAR(20) NOT NULL,
 airline_id BIGINT NOT NULL,
 
 created_by VARCHAR(255) NOT NULL,
@@ -123,7 +128,7 @@ CREATE TABLE FLIGHT_SEAT_CAPACITY (
    
    flight_id BIGINT NOT NULL,
    seat_type_id BIGINT NOT NULL,
-   capacity INT NOT NULL,
+   capacity INT NOT NULL CHECK (capacity > 0),
    
    created_by VARCHAR(255) NOT NULL,
    created_at TIMESTAMP NOT NULL,
@@ -155,6 +160,15 @@ CREATE TABLE FLIGHT_SEAT_CAPACITY (
 
     modified_by VARCHAR(255) NOT NULL,
     modified_at TIMESTAMP NOT NULL,
+
+   CONSTRAINT chk_source_destination
+        CHECK (source_airport_id <> destination_airport_id),
+		
+	CONSTRAINT chk_arrival_departure_time
+        CHECK (arrival_time > departure_time),
+		
+	CONSTRAINT chk_effective_dates
+    CHECK (effective_to >= effective_from),
 
     CONSTRAINT fk_flight_schedule_flight
         FOREIGN KEY (flight_id)

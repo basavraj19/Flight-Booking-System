@@ -27,7 +27,7 @@ public class CountryService {
 		String countryCode = record.getCountryCode().trim().toUpperCase();
 
 		if (!StringUtils.hasText(countryCode)
-				|| !(countryCode.length() >= NumericConstants.THREE && countryCode.length() <= NumericConstants.TEN)) {
+				|| !(countryCode.length() >= NumericConstants.TWO && countryCode.length() <= NumericConstants.THREE)) {
 			throw new InvalidInputException("Invalid Country Code.");
 		}
 
@@ -52,8 +52,8 @@ public class CountryService {
 	public Country getCountryDetailsByCountryCode(final String countryCode) {
 		String validCountryCode = countryCode.trim().toUpperCase();
 
-		if (!StringUtils.hasText(validCountryCode) || !(validCountryCode.length() >= NumericConstants.THREE
-				&& validCountryCode.length() <= NumericConstants.TEN)) {
+		if (!StringUtils.hasText(validCountryCode) || !(validCountryCode.length() >= NumericConstants.TWO
+				&& validCountryCode.length() <= NumericConstants.THREE)) {
 			throw new InvalidInputException("Invalid Country Code.");
 		}
 
@@ -87,7 +87,7 @@ public class CountryService {
 		}
 
 		if (!StringUtils.hasText(countryCode)
-				|| !(countryCode.length() >= NumericConstants.THREE && countryCode.length() <= NumericConstants.TEN)) {
+				|| !(countryCode.length() >= NumericConstants.TWO && countryCode.length() <= NumericConstants.THREE)) {
 			throw new InvalidInputException("Invalid Country Code.");
 		}
 

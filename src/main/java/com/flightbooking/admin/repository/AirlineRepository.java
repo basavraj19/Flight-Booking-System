@@ -6,6 +6,8 @@ import org.springframework.stereotype.Repository;
 import com.flightbooking.admin.entity.Airline;
 
 @Repository
-public interface AirlineRepository extends JpaRepository<Airline, Integer> {
+public interface AirlineRepository extends JpaRepository<Airline, Long> {
+
+	boolean existsByAirlineNameIgnoreCase(String airlineName);
 
 }

@@ -38,7 +38,7 @@ public class CityService {
 		String cityCode = city.getCityCode().trim().toUpperCase();
 
 		if (!StringUtils.hasText(cityCode)
-				|| !(cityCode.length() >= NumericConstants.THREE && cityCode.length() <= NumericConstants.TEN)) {
+				|| !(cityCode.length() >= NumericConstants.TWO && cityCode.length() <= NumericConstants.THREE)) {
 			throw new InvalidInputException("Invalid City Code.");
 		}
 
@@ -47,7 +47,7 @@ public class CityService {
 		}
 
 		if (!StringUtils.hasText(countryCode)
-				|| !(countryCode.length() >= NumericConstants.THREE && countryCode.length() <= NumericConstants.TEN)) {
+				|| !(countryCode.length() >= NumericConstants.TWO && countryCode.length() <= NumericConstants.THREE)) {
 			throw new InvalidInputException("Invalid Country Code.");
 		}
 
@@ -74,8 +74,8 @@ public class CityService {
 	public CityModel getCityDetailsByCode(final String cityCode) {
 		String validCityCode = cityCode.trim().toUpperCase();
 
-		if (!StringUtils.hasText(validCityCode) || !(validCityCode.length() >= NumericConstants.THREE
-				&& validCityCode.length() <= NumericConstants.TEN)) {
+		if (!StringUtils.hasText(validCityCode) || !(validCityCode.length() >= NumericConstants.TWO
+				&& validCityCode.length() <= NumericConstants.THREE)) {
 			throw new InvalidInputException("Invalid City Code.");
 		}
 
@@ -127,8 +127,12 @@ public class CityService {
 		String cityCode = model.getCityCode().trim().toUpperCase();
 		String countryCode = model.getCountryCode().trim().toUpperCase();
 
+		if (model.getRecordId() <= 0) {
+			throw new InvalidInputException("Invalid Id.");
+		}
+
 		if (!StringUtils.hasText(cityCode)
-				|| !(cityCode.length() >= NumericConstants.THREE && cityCode.length() <= NumericConstants.TEN)) {
+				|| !(cityCode.length() >= NumericConstants.TWO && cityCode.length() <= NumericConstants.THREE)) {
 			throw new InvalidInputException("Invalid City Code.");
 		}
 
@@ -137,7 +141,7 @@ public class CityService {
 		}
 
 		if (!StringUtils.hasText(countryCode)
-				|| !(countryCode.length() >= NumericConstants.THREE && countryCode.length() <= NumericConstants.TEN)) {
+				|| !(countryCode.length() >= NumericConstants.TWO && countryCode.length() <= NumericConstants.THREE)) {
 			throw new InvalidInputException("Invalid Country Code.");
 		}
 
