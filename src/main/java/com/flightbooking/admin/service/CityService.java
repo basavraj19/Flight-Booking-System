@@ -127,7 +127,7 @@ public class CityService {
 		String cityCode = model.getCityCode().trim().toUpperCase();
 		String countryCode = model.getCountryCode().trim().toUpperCase();
 
-		if (model.getRecordId() <= 0) {
+		if (model.getRecordId() == null || model.getRecordId() <= 0) {
 			throw new InvalidInputException("Invalid Id.");
 		}
 

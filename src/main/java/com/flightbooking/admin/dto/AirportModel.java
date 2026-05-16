@@ -15,6 +15,8 @@ public class AirportModel {
 
 	private Long recordId;
 
+	private String airportCode;
+
 	private String airportName;
 
 	private Long cityId;

@@ -25,8 +25,12 @@ public class UrlConstants {
 	public static final String AIRLINE = "/airline";
 
 	public static final String CREATE_NEW_AIRLINE = "/create";
+	
+	public static final String FETCH_AIRLINE = "/getAllAirlines";
 
 	public static final String AIRPORT = "/airport";
 
 	public static final String CREATE_NEW_AIRPORT = "/create";
+	
+	public static final String FETCH_AIRPORT_BY_CITY = "/fetchAirportByCity/{cityCode}";
 }
