@@ -71,6 +71,7 @@ public class CityService {
 		return newCity;
 	}
 
+	@Transactional(readOnly = true)
 	public CityModel getCityDetailsByCode(final String cityCode) {
 		String validCityCode = cityCode.trim().toUpperCase();
 
@@ -95,7 +96,7 @@ public class CityService {
 		return data;
 	}
 
-	@Transactional
+	@Transactional(readOnly = true)
 	public List<CityModel> getCityDetailsByCountry(final String countryCode) {
 
 		Country countryDetails = countryService.getCountryDetailsByCountryCode(countryCode);
@@ -127,7 +128,7 @@ public class CityService {
 		String cityCode = model.getCityCode().trim().toUpperCase();
 		String countryCode = model.getCountryCode().trim().toUpperCase();
 
-		if (model.getRecordId() == null || model.getRecordId() <= 0) {
+		if (model.getRecordId() == null || model.getRecordId() <= NumericConstants.ZERO) {
 			throw new InvalidInputException("Invalid Id.");
 		}
 

@@ -1,6 +1,5 @@
 package com.flightbooking.admin.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +11,7 @@ import com.flightbooking.admin.dto.AirlineModel;
 import com.flightbooking.admin.entity.Airline;
 import com.flightbooking.admin.exception.DuplicateResourceException;
 import com.flightbooking.admin.exception.InvalidInputException;
+import com.flightbooking.admin.exception.ResourceNotFoundException;
 import com.flightbooking.admin.repository.AirlineRepository;
 import com.flightbooking.admin.util.CommonUtils;
 
@@ -57,18 +57,15 @@ public class AirlineService {
 		return model;
 	}
 
+	@Transactional(readOnly = true)
 	public List<AirlineModel> getAllAirlineEntries() {
 		final List<Airline> airlineList = airlineRepository.findAll();
 
-		final List<AirlineModel> resultSet = new ArrayList<>();
-
-		if (CommonUtils.isValid(airlineList)) {
-
-			for (Airline record : airlineList) {
-				final AirlineModel newEntry = mapObjToAirlineModel(record);
-				resultSet.add(newEntry);
-			}
+		if (!CommonUtils.isValid(airlineList)) {
+			throw new ResourceNotFoundException("No Records found.");
 		}
+
+		List<AirlineModel> resultSet = airlineList.stream().map(this::mapObjToAirlineModel).toList();
 
 		return resultSet;
 	}

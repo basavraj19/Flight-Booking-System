@@ -82,7 +82,7 @@ public class CountryService {
 
 		String countryCode = record.getCountryCode().trim().toUpperCase();
 
-		if (record.getRecordId() <= 0) {
+		if (record.getRecordId() == null || record.getRecordId() <= NumericConstants.ZERO) {
 			throw new InvalidInputException("Invalid Id.");
 		}
 

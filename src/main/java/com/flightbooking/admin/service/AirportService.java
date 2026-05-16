@@ -1,6 +1,5 @@
 package com.flightbooking.admin.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +12,7 @@ import com.flightbooking.admin.dto.CityModel;
 import com.flightbooking.admin.entity.Airport;
 import com.flightbooking.admin.exception.DuplicateResourceException;
 import com.flightbooking.admin.exception.InvalidInputException;
+import com.flightbooking.admin.exception.ResourceNotFoundException;
 import com.flightbooking.admin.repository.AirportRepository;
 import com.flightbooking.admin.util.CommonUtils;
 import com.flightbooking.admin.util.NumericConstants;
@@ -70,22 +70,18 @@ public class AirportService {
 		return model;
 	}
 
-	@Transactional
+	@Transactional(readOnly = true)
 	public List<AirportModel> getAirportsCitywise(final String cityCode) {
 		final CityModel model = cityService.getCityDetailsByCode(cityCode);
 
-		final List<AirportModel> resultSet = new ArrayList<>();
-
 		final List<Airport> airportList = airportRepository.findAllByCityId(model.getRecordId());
 
-		if (CommonUtils.isValid(airportList)) {
-
-			for (Airport record : airportList) {
-				final AirportModel newEntry = mapToAirportModel(record);
-				resultSet.add(newEntry);
-			}
+		if (!CommonUtils.isValid(airportList)) {
+			throw new ResourceNotFoundException("No Records found.");
 		}
-		
+
+		List<AirportModel> resultSet = airportList.stream().map(this::mapToAirportModel).toList();
+
 		return resultSet;
 	}
 }

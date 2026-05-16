@@ -21,4 +21,10 @@ public class StringConstants {
 	public static final String COUNTRY_CODE = "countryCode";
 
 	public static final String CITY_CODE = "cityCode";
+
+	public static final String AIRLINE_ID = "airlineId";
+
+	public static final String FLIGHT_NUMBER = "flightNumber";
+
+	public static final String flightNumberRegex = "^[a-zA-Z0-9]+$";
 }
