@@ -7,8 +7,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import com.flightbooking.admin.dto.AirportModel;
-import com.flightbooking.admin.dto.CityModel;
+import com.flightbooking.admin.dto.AirportRequestModel;
+import com.flightbooking.admin.dto.AirportResponseModel;
+import com.flightbooking.admin.dto.CityResponseModel;
 import com.flightbooking.admin.entity.Airport;
 import com.flightbooking.admin.exception.DuplicateResourceException;
 import com.flightbooking.admin.exception.InvalidInputException;
@@ -27,7 +28,7 @@ public class AirportService {
 	private CityService cityService;
 
 	@Transactional
-	public AirportModel createNewEntry(final AirportModel model) {
+	public AirportResponseModel createNewEntry(final AirportRequestModel model) {
 
 		String airportCode = model.getAirportCode().trim().toUpperCase();
 
@@ -47,24 +48,25 @@ public class AirportService {
 		}
 
 		Airport newAirport = Airport.builder().airportCode(airportCode).airportName(model.getAirportName().trim())
-				.cityId(model.getCityId()).createdBy(model.getCreatedBy()).modifiedBy(model.getModifiedBy()).build();
+				.cityId(model.getCityId()).build();
 
 		newAirport = airportRepository.save(newAirport);
 
-		final AirportModel newEntry = mapToAirportModel(newAirport);
+		final AirportResponseModel newEntry = mapToAirportModel(newAirport);
 
 		return newEntry;
 	}
 
-	private AirportModel mapToAirportModel(final Airport airport) {
+	private AirportResponseModel mapToAirportModel(final Airport airport) {
 
-		final AirportModel model = new AirportModel();
+		final AirportResponseModel model = new AirportResponseModel();
 
 		if (CommonUtils.isValid(airport)) {
 			model.setRecordId(airport.getId());
 			model.setAirportCode(airport.getAirportCode());
 			model.setAirportName(airport.getAirportName());
-			model.setCityId(airport.getCityId());;
+			model.setCityId(airport.getCityId());
+			;
 			model.setCreatedBy(airport.getCreatedBy());
 			model.setModifiedBy(airport.getModifiedBy());
 		}
@@ -72,8 +74,8 @@ public class AirportService {
 	}
 
 	@Transactional(readOnly = true)
-	public List<AirportModel> getAirportsCitywise(final String cityCode) {
-		final CityModel model = cityService.getCityDetailsByCode(cityCode);
+	public List<AirportResponseModel> getAirportsCitywise(final String cityCode) {
+		final CityResponseModel model = cityService.getCityDetailsByCode(cityCode);
 
 		final List<Airport> airportList = airportRepository.findAllByCityId(model.getRecordId());
 
@@ -81,7 +83,7 @@ public class AirportService {
 			throw new ResourceNotFoundException("No Records found.");
 		}
 
-		List<AirportModel> resultSet = airportList.stream().map(this::mapToAirportModel).toList();
+		List<AirportResponseModel> resultSet = airportList.stream().map(this::mapToAirportModel).toList();
 
 		return resultSet;
 	}

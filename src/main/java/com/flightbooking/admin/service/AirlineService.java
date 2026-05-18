@@ -7,7 +7,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import com.flightbooking.admin.dto.AirlineModel;
+import com.flightbooking.admin.dto.AirlineRequestModel;
+import com.flightbooking.admin.dto.AirlineResponseModel;
 import com.flightbooking.admin.entity.Airline;
 import com.flightbooking.admin.exception.DuplicateResourceException;
 import com.flightbooking.admin.exception.InvalidInputException;
@@ -22,7 +23,7 @@ public class AirlineService {
 	private AirlineRepository airlineRepository;
 
 	@Transactional
-	public AirlineModel createNewEntry(final AirlineModel model) {
+	public AirlineResponseModel createNewEntry(final AirlineRequestModel model) {
 
 		if (!StringUtils.hasText(model.getAirlineName())) {
 			throw new InvalidInputException("Invalid Airline name.");
@@ -34,19 +35,18 @@ public class AirlineService {
 			throw new DuplicateResourceException("Airport Already Exists.");
 		}
 
-		Airline airline = Airline.builder().airlineName(model.getAirlineName().trim()).createdBy(model.getCreateBy())
-				.modifiedBy(model.getModifiedBy()).build();
+		Airline airline = Airline.builder().airlineName(model.getAirlineName().trim()).build();
 
 		airline = airlineRepository.save(airline);
 
-		final AirlineModel newRecord = mapObjToAirlineModel(airline);
+		final AirlineResponseModel newRecord = mapObjToAirlineModel(airline);
 
 		return newRecord;
 	}
 
-	private AirlineModel mapObjToAirlineModel(final Airline airline) {
+	private AirlineResponseModel mapObjToAirlineModel(final Airline airline) {
 
-		final AirlineModel model = new AirlineModel();
+		final AirlineResponseModel model = new AirlineResponseModel();
 
 		if (CommonUtils.isValid(airline)) {
 			model.setRecordId(airline.getId());
@@ -58,14 +58,14 @@ public class AirlineService {
 	}
 
 	@Transactional(readOnly = true)
-	public List<AirlineModel> getAllAirlineEntries() {
+	public List<AirlineResponseModel> getAllAirlineEntries() {
 		final List<Airline> airlineList = airlineRepository.findAll();
 
 		if (!CommonUtils.isValid(airlineList)) {
 			throw new ResourceNotFoundException("No Records found.");
 		}
 
-		List<AirlineModel> resultSet = airlineList.stream().map(this::mapObjToAirlineModel).toList();
+		List<AirlineResponseModel> resultSet = airlineList.stream().map(this::mapObjToAirlineModel).toList();
 
 		return resultSet;
 	}

@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.flightbooking.admin.dto.CityModel;
-import com.flightbooking.admin.entity.City;
+import com.flightbooking.admin.dto.CityRequestModel;
+import com.flightbooking.admin.dto.CityResponseModel;
 import com.flightbooking.admin.service.CityService;
 import com.flightbooking.admin.util.JsonResponseEntity;
 import com.flightbooking.admin.util.StringConstants;
@@ -28,11 +28,11 @@ public class CityController {
 	private CityService cityService;
 
 	@PostMapping(UrlConstants.CREATE_NEW_CITY)
-	public ResponseEntity<JsonResponseEntity<City>> createNewCity(@RequestBody CityModel city) {
+	public ResponseEntity<JsonResponseEntity<CityResponseModel>> createNewCity(@RequestBody CityRequestModel city) {
 
-		JsonResponseEntity<City> response = new JsonResponseEntity<>();
+		JsonResponseEntity<CityResponseModel> response = new JsonResponseEntity<>();
 
-		final City newCity = cityService.createNewCityEntry(city);
+		final CityResponseModel newCity = cityService.createNewCityEntry(city);
 
 		response.setStatus(StringConstants.success);
 		response.setMessage(StringConstants.recordSavedSuccessMessage);
@@ -44,11 +44,11 @@ public class CityController {
 	}
 
 	@GetMapping(UrlConstants.FETCH_CITY_DETAILS)
-	public ResponseEntity<JsonResponseEntity<CityModel>> getCityDetails(
+	public ResponseEntity<JsonResponseEntity<CityResponseModel>> getCityDetails(
 			@RequestParam(value = StringConstants.CITY_CODE) final String cityCode) {
-		JsonResponseEntity<CityModel> response = new JsonResponseEntity<>();
+		JsonResponseEntity<CityResponseModel> response = new JsonResponseEntity<>();
 
-		CityModel result = cityService.getCityDetailsByCode(cityCode);
+		CityResponseModel result = cityService.getCityDetailsByCode(cityCode);
 
 		response.setStatus(StringConstants.success);
 		response.setMessage(StringConstants.recordFetchSuccessMessage);
@@ -60,11 +60,11 @@ public class CityController {
 	}
 
 	@GetMapping(UrlConstants.FETCH_CITIES_BY_COUNTRY)
-	public ResponseEntity<JsonResponseEntity<List<CityModel>>> getCitieByCountry(
+	public ResponseEntity<JsonResponseEntity<List<CityResponseModel>>> getCitieByCountry(
 			@RequestParam(value = StringConstants.COUNTRY_CODE) final String countryCode) {
-		JsonResponseEntity<List<CityModel>> response = new JsonResponseEntity<>();
+		JsonResponseEntity<List<CityResponseModel>> response = new JsonResponseEntity<>();
 
-		List<CityModel> result = cityService.getCityDetailsByCountry(countryCode);
+		List<CityResponseModel> result = cityService.getCityDetailsByCountry(countryCode);
 
 		response.setStatus(StringConstants.success);
 		response.setMessage(StringConstants.recordFetchSuccessMessage);
@@ -76,10 +76,10 @@ public class CityController {
 	}
 
 	@PutMapping(UrlConstants.UPDATE_CITY_DETAILS)
-	public ResponseEntity<JsonResponseEntity<CityModel>> updateCityDetails(@RequestBody final CityModel request) {
-		JsonResponseEntity<CityModel> response = new JsonResponseEntity<>();
+	public ResponseEntity<JsonResponseEntity<CityResponseModel>> updateCityDetails(@RequestBody final CityRequestModel request) {
+		JsonResponseEntity<CityResponseModel> response = new JsonResponseEntity<>();
 
-		CityModel result = cityService.updateCityDetails(request);
+		CityResponseModel result = cityService.updateCityDetails(request);
 
 		response.setStatus(StringConstants.success);
 		response.setMessage(StringConstants.recordUpdateSuccessMessage);

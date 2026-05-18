@@ -1,6 +1,5 @@
 package com.flightbooking.admin.dto;
 
-import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -37,12 +36,4 @@ public class FlightScheduleRequest {
 	private LocalDate effectiveTo;
 	
 	private Byte arrivalDayOffset;
-
-	private String createdBy;
-
-	private Instant createdAt;
-
-	private String modifiedBy;
-
-	private Instant modifiedAt;
 }

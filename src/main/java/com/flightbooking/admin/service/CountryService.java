@@ -1,5 +1,6 @@
 package com.flightbooking.admin.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,12 +8,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import com.flightbooking.admin.dto.CountryModel;
+import com.flightbooking.admin.dto.CountryRequestModel;
+import com.flightbooking.admin.dto.CountryResponseModel;
 import com.flightbooking.admin.entity.Country;
 import com.flightbooking.admin.exception.DuplicateResourceException;
 import com.flightbooking.admin.exception.InvalidInputException;
 import com.flightbooking.admin.exception.ResourceNotFoundException;
 import com.flightbooking.admin.repository.CountryRepository;
+import com.flightbooking.admin.util.CommonUtils;
 import com.flightbooking.admin.util.NumericConstants;
 
 @Service
@@ -22,7 +25,7 @@ public class CountryService {
 	private CountryRepository countryRepository;
 
 	@Transactional
-	public Country saveNewCountryDetails(final CountryModel record) {
+	public CountryResponseModel saveNewCountryDetails(final CountryRequestModel record) {
 
 		String countryCode = record.getCountryCode().trim().toUpperCase();
 
@@ -41,15 +44,16 @@ public class CountryService {
 			throw new DuplicateResourceException("Country Already Exists.");
 		}
 
-		Country newCountry = Country.builder().countryCode(countryCode).countryName(record.getCountryName())
-				.createdBy(record.getCreatedBy()).modifiedBy(record.getModifiedBy()).build();
+		Country newCountry = Country.builder().countryCode(countryCode).countryName(record.getCountryName()).build();
 
 		newCountry = countryRepository.save(newCountry);
 
-		return newCountry;
+		CountryResponseModel model = mapFieldsToCountryResponseModel(newCountry);
+
+		return model;
 	}
 
-	public Country getCountryDetailsByCountryCode(final String countryCode) {
+	public CountryResponseModel getCountryDetailsByCountryCode(final String countryCode) {
 		String validCountryCode = countryCode.trim().toUpperCase();
 
 		if (!StringUtils.hasText(validCountryCode) || !(validCountryCode.length() >= NumericConstants.TWO
@@ -63,22 +67,31 @@ public class CountryService {
 			throw new ResourceNotFoundException("Country with code " + validCountryCode + " does not exists.");
 		}
 
-		return record;
+		CountryResponseModel model = mapFieldsToCountryResponseModel(record);
+
+		return model;
 	}
 
-	public List<Country> getAllCountryDetails() {
+	public List<CountryResponseModel> getAllCountryDetails() {
 
-		List<Country> record = countryRepository.findAll();
+		List<Country> recordList = countryRepository.findAll();
 
-		if (record.isEmpty()) {
+		if (recordList.isEmpty()) {
 			throw new ResourceNotFoundException("No Data found.");
 		}
 
-		return record;
+		List<CountryResponseModel> resultSet = new ArrayList<>();
+
+		for (Country country : recordList) {
+			CountryResponseModel model = mapFieldsToCountryResponseModel(country);
+			resultSet.add(model);
+		}
+
+		return resultSet;
 	}
 
 	@Transactional
-	public Country updateDetails(final CountryModel record) {
+	public CountryResponseModel updateDetails(final CountryRequestModel record) {
 
 		String countryCode = record.getCountryCode().trim().toUpperCase();
 
@@ -101,8 +114,23 @@ public class CountryService {
 		existingRecord.setCountryCode(countryCode);
 		existingRecord.setCountryName(record.getCountryName());
 
-		Country updateRecord = countryRepository.save(existingRecord);
+		countryRepository.save(existingRecord);
+
+		CountryResponseModel updateRecord = mapFieldsToCountryResponseModel(existingRecord);
 
 		return updateRecord;
+	}
+
+	private CountryResponseModel mapFieldsToCountryResponseModel(final Country record) {
+
+		CountryResponseModel model = new CountryResponseModel();
+
+		if (CommonUtils.isValid(model)) {
+			model = CountryResponseModel.builder().recordId(record.getId()).countryCode(record.getCountryCode())
+					.countryName(record.getCountryName()).createdBy(record.getCreatedBy())
+					.modifiedBy(record.getModifiedBy()).build();
+
+		}
+		return model;
 	}
 }

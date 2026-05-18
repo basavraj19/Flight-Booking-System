@@ -11,7 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.flightbooking.admin.dto.AirlineModel;
+import com.flightbooking.admin.dto.AirlineRequestModel;
+import com.flightbooking.admin.dto.AirlineResponseModel;
 import com.flightbooking.admin.service.AirlineService;
 import com.flightbooking.admin.util.JsonResponseEntity;
 import com.flightbooking.admin.util.StringConstants;
@@ -25,12 +26,12 @@ public class AirlineController {
 	private AirlineService airlineService;
 
 	@PostMapping(UrlConstants.CREATE_NEW_AIRLINE)
-	public ResponseEntity<JsonResponseEntity<AirlineModel>> createNewAirlineEntry(
-			@RequestBody final AirlineModel model) {
+	public ResponseEntity<JsonResponseEntity<AirlineResponseModel>> createNewAirlineEntry(
+			@RequestBody final AirlineRequestModel model) {
 
-		JsonResponseEntity<AirlineModel> response = new JsonResponseEntity<>();
+		JsonResponseEntity<AirlineResponseModel> response = new JsonResponseEntity<>();
 
-		AirlineModel newRecord = airlineService.createNewEntry(model);
+		AirlineResponseModel newRecord = airlineService.createNewEntry(model);
 
 		response.setStatus(StringConstants.success);
 		response.setMessage(StringConstants.recordSavedSuccessMessage);
@@ -42,11 +43,11 @@ public class AirlineController {
 	}
 	
 	@GetMapping(UrlConstants.FETCH_AIRLINE)
-	public ResponseEntity<JsonResponseEntity<List<AirlineModel>>> getAllAirlines() {
+	public ResponseEntity<JsonResponseEntity<List<AirlineResponseModel>>> getAllAirlines() {
 
-		JsonResponseEntity<List<AirlineModel>> response = new JsonResponseEntity<>();
+		JsonResponseEntity<List<AirlineResponseModel>> response = new JsonResponseEntity<>();
 
-		List<AirlineModel> recordList = airlineService.getAllAirlineEntries();
+		List<AirlineResponseModel> recordList = airlineService.getAllAirlineEntries();
 
 		response.setStatus(StringConstants.success);
 		response.setMessage(StringConstants.recordSavedSuccessMessage);

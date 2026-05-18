@@ -7,7 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.flightbooking.admin.dto.FlightModel;
+import com.flightbooking.admin.dto.FlightRequestModel;
+import com.flightbooking.admin.dto.FlightResponseModel;
 import com.flightbooking.admin.entity.Flight;
 import com.flightbooking.admin.exception.DuplicateResourceException;
 import com.flightbooking.admin.exception.InvalidInputException;
@@ -24,7 +25,7 @@ public class FlightService {
 	private FlightRepository flightRepository;
 
 	@Transactional
-	public FlightModel createNewFlightEntry(final FlightModel model) {
+	public FlightResponseModel createNewFlightEntry(final FlightRequestModel model) {
 
 		if (model.getAirlineId() == null || model.getAirlineId() <= NumericConstants.ZERO) {
 			throw new InvalidInputException("Invalid AirlineId.");
@@ -38,12 +39,11 @@ public class FlightService {
 			throw new DuplicateResourceException("Flight with number " + flightNumber + " already exists.");
 		}
 
-		Flight newRecord = Flight.builder().flightNumber(flightNumber).airlineId(model.getAirlineId())
-				.createdBy(model.getCreatedBy()).modifiedBy(model.getModifiedBy()).build();
+		Flight newRecord = Flight.builder().flightNumber(flightNumber).airlineId(model.getAirlineId()).build();
 
 		newRecord = flightRepository.save(newRecord);
 
-		FlightModel newFlight = mapToFlightModel(newRecord);
+		FlightResponseModel newFlight = mapToFlightModel(newRecord);
 
 		return newFlight;
 	}
@@ -63,9 +63,9 @@ public class FlightService {
 		return flightNumber;
 	}
 
-	private FlightModel mapToFlightModel(final Flight flight) {
+	private FlightResponseModel mapToFlightModel(final Flight flight) {
 
-		FlightModel model = new FlightModel();
+		FlightResponseModel model = new FlightResponseModel();
 
 		if (CommonUtils.isValid(flight)) {
 			model.setFlightId(flight.getId());
@@ -79,7 +79,7 @@ public class FlightService {
 	}
 
 	@Transactional(readOnly = true)
-	public FlightModel getDetailsByFlightNumber(String flightNumber) {
+	public FlightResponseModel getDetailsByFlightNumber(String flightNumber) {
 
 		flightNumber = validateAndNormalizeFlightNumber(flightNumber);
 
@@ -89,13 +89,13 @@ public class FlightService {
 			throw new ResourceNotFoundException("Flight with number " + flightNumber + " does not exist.");
 		}
 
-		FlightModel model = mapToFlightModel(flight);
+		FlightResponseModel model = mapToFlightModel(flight);
 
 		return model;
 	}
 
 	@Transactional(readOnly = true)
-	public List<FlightModel> getAllFlightsByAirline(Long airlineId) {
+	public List<FlightResponseModel> getAllFlightsByAirline(Long airlineId) {
 
 		if (airlineId <= NumericConstants.ZERO) {
 			throw new InvalidInputException("Invalid AirlineId.");
@@ -107,7 +107,7 @@ public class FlightService {
 			throw new ResourceNotFoundException("No Records found.");
 		}
 
-		List<FlightModel> dataList = flights.stream().map(this::mapToFlightModel).toList();
+		List<FlightResponseModel> dataList = flights.stream().map(this::mapToFlightModel).toList();
 
 		return dataList;
 	}

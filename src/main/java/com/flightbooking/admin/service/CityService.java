@@ -8,7 +8,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import com.flightbooking.admin.dto.CityModel;
+import com.flightbooking.admin.dto.CityRequestModel;
+import com.flightbooking.admin.dto.CityResponseModel;
+import com.flightbooking.admin.dto.CountryResponseModel;
 import com.flightbooking.admin.entity.City;
 import com.flightbooking.admin.entity.Country;
 import com.flightbooking.admin.exception.DuplicateResourceException;
@@ -32,7 +34,7 @@ public class CityService {
 	private CountryService countryService;
 
 	@Transactional
-	public City createNewCityEntry(final CityModel city) {
+	public CityResponseModel createNewCityEntry(final CityRequestModel city) {
 
 		String countryCode = city.getCountryCode().trim().toUpperCase();
 		String cityCode = city.getCityCode().trim().toUpperCase();
@@ -64,15 +66,19 @@ public class CityService {
 		}
 
 		City newCity = City.builder().cityCode(cityCode).cityName(city.getCityName().trim()).countryId(countryId)
-				.createdBy(city.getCreatedBy()).modifiedBy(city.getModifiedBy()).build();
+				.build();
 
 		newCity = cityRepository.save(newCity);
 
-		return newCity;
+		CityResponseModel newRecord = CityResponseModel.builder().recordId(newCity.getId())
+				.cityCode(newCity.getCityCode()).cityName(newCity.getCityName()).countryCode(countryCode)
+				.createdBy(newCity.getCreatedBy()).modifiedBy(newCity.getModifiedBy()).build();
+
+		return newRecord;
 	}
 
 	@Transactional(readOnly = true)
-	public CityModel getCityDetailsByCode(final String cityCode) {
+	public CityResponseModel getCityDetailsByCode(final String cityCode) {
 		String validCityCode = cityCode.trim().toUpperCase();
 
 		if (!StringUtils.hasText(validCityCode) || !(validCityCode.length() >= NumericConstants.TWO
@@ -89,7 +95,7 @@ public class CityService {
 		Country country = countryRepository.findById(result.getCountryId())
 				.orElseThrow(() -> new ResourceNotFoundException("Country does not exists."));
 
-		CityModel data = CityModel.builder().recordId(result.getId()).cityCode(result.getCityCode())
+		CityResponseModel data = CityResponseModel.builder().recordId(result.getId()).cityCode(result.getCityCode())
 				.cityName(result.getCityName()).countryCode(country.getCountryCode()).createdBy(result.getCreatedBy())
 				.modifiedBy(result.getModifiedBy()).build();
 
@@ -97,22 +103,23 @@ public class CityService {
 	}
 
 	@Transactional(readOnly = true)
-	public List<CityModel> getCityDetailsByCountry(final String countryCode) {
+	public List<CityResponseModel> getCityDetailsByCountry(final String countryCode) {
 
-		Country countryDetails = countryService.getCountryDetailsByCountryCode(countryCode);
+		CountryResponseModel countryDetails = countryService.getCountryDetailsByCountryCode(countryCode);
 
-		List<CityModel> result = new ArrayList<>();
+		List<CityResponseModel> result = new ArrayList<>();
 
 		if (CommonUtils.isValid(countryDetails)) {
-			List<City> dataList = cityRepository.findByCountryId(countryDetails.getId());
+			List<City> dataList = cityRepository.findByCountryId(countryDetails.getRecordId());
 
 			if (CommonUtils.isValid(dataList)) {
 
 				for (City record : dataList) {
 
-					CityModel model = CityModel.builder().recordId(record.getId()).cityCode(record.getCityCode())
-							.cityName(record.getCityName()).countryCode(countryDetails.getCountryCode())
-							.createdBy(record.getCreatedBy()).modifiedBy(record.getModifiedBy()).build();
+					CityResponseModel model = CityResponseModel.builder().recordId(record.getId())
+							.cityCode(record.getCityCode()).cityName(record.getCityName())
+							.countryCode(countryDetails.getCountryCode()).createdBy(record.getCreatedBy())
+							.modifiedBy(record.getModifiedBy()).build();
 
 					result.add(model);
 				}
@@ -123,7 +130,7 @@ public class CityService {
 	}
 
 	@Transactional
-	public CityModel updateCityDetails(final CityModel model) {
+	public CityResponseModel updateCityDetails(final CityRequestModel model) {
 
 		String cityCode = model.getCityCode().trim().toUpperCase();
 		String countryCode = model.getCountryCode().trim().toUpperCase();
@@ -161,9 +168,9 @@ public class CityService {
 
 		result = cityRepository.save(result);
 
-		CityModel updatedRecord = CityModel.builder().recordId(result.getId()).cityCode(result.getCityCode())
-				.cityName(result.getCityName()).countryCode(countryCode).createdBy(result.getCreatedBy())
-				.modifiedBy(result.getModifiedBy()).build();
+		CityResponseModel updatedRecord = CityResponseModel.builder().recordId(result.getId())
+				.cityCode(result.getCityCode()).cityName(result.getCityName()).countryCode(countryCode)
+				.createdBy(result.getCreatedBy()).modifiedBy(result.getModifiedBy()).build();
 
 		return updatedRecord;
 	}

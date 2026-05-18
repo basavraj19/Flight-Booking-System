@@ -8,16 +8,18 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
 @Builder
-public class FlightModel {
+@AllArgsConstructor
+@NoArgsConstructor
+public class CityResponseModel {
 
-	private Long flightId;
+	private Long recordId;
 
-	private String flightNumber;
+	private String cityCode;
 
-	private Long airlineId;
+	private String cityName;
+
+	private String countryCode;
 
 	private String createdBy;
 

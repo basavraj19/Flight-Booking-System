@@ -45,8 +45,7 @@ public class FlightScheduleService {
 				.sourceAirportId(model.getSourceAirportId()).destinationAirportId(model.getDestinationAirportId())
 				.departureTime(model.getDepartureTime()).arrivalTime(model.getArrivalTime())
 				.effectiveFrom(model.getEffectiveFrom()).effectiveTo(model.getEffectiveTo())
-				.arrivaleDayOffset(model.getArrivalDayOffset()).createdBy(model.getCreatedBy())
-				.modifiedBy(model.getModifiedBy()).build();
+				.arrivaleDayOffset(model.getArrivalDayOffset()).build();
 
 		newSchedule = flightScheduleRepository.save(newSchedule);
 

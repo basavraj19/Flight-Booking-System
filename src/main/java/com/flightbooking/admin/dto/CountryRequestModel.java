@@ -11,15 +11,11 @@ import lombok.Setter;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CountryModel {
+public class CountryRequestModel {
 
 	private Long recordId;
 
 	private String countryCode;
 
 	private String countryName;
-
-	private String createdBy;
-
-	private String modifiedBy;
 }

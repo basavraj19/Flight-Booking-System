@@ -12,7 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.flightbooking.admin.dto.AirportModel;
+import com.flightbooking.admin.dto.AirportRequestModel;
+import com.flightbooking.admin.dto.AirportResponseModel;
 import com.flightbooking.admin.service.AirportService;
 import com.flightbooking.admin.util.JsonResponseEntity;
 import com.flightbooking.admin.util.StringConstants;
@@ -26,11 +27,11 @@ public class AirportController {
 	private AirportService airportService;
 	
 	@PostMapping(UrlConstants.CREATE_NEW_AIRPORT)
-	public ResponseEntity<JsonResponseEntity<AirportModel>> createNewAirlineEntry(@RequestBody final AirportModel model) {
+	public ResponseEntity<JsonResponseEntity<AirportResponseModel>> createNewAirlineEntry(@RequestBody final AirportRequestModel model) {
 
-		JsonResponseEntity<AirportModel> response = new JsonResponseEntity<>();
+		JsonResponseEntity<AirportResponseModel> response = new JsonResponseEntity<>();
 
-		final AirportModel newRecord = airportService.createNewEntry(model);
+		final AirportResponseModel newRecord = airportService.createNewEntry(model);
 		
 		response.setStatus(StringConstants.success);
 		response.setMessage(StringConstants.recordSavedSuccessMessage);
@@ -42,12 +43,12 @@ public class AirportController {
 	}
 
 	@GetMapping(UrlConstants.FETCH_AIRPORT_BY_CITY)
-	public ResponseEntity<JsonResponseEntity<List<AirportModel>>> getAirportsDetailsByCity(
+	public ResponseEntity<JsonResponseEntity<List<AirportResponseModel>>> getAirportsDetailsByCity(
 			@PathVariable(value = StringConstants.CITY_CODE) final String cityCode) {
 
-		JsonResponseEntity<List<AirportModel>> response = new JsonResponseEntity<>();
+		JsonResponseEntity<List<AirportResponseModel>> response = new JsonResponseEntity<>();
 
-		final List<AirportModel> resultList = airportService.getAirportsCitywise(cityCode);
+		final List<AirportResponseModel> resultList = airportService.getAirportsCitywise(cityCode);
 		
 		response.setStatus(StringConstants.success);
 		response.setResult(resultList);

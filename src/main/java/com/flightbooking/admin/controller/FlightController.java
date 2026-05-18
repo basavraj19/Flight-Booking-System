@@ -12,7 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.flightbooking.admin.dto.FlightModel;
+import com.flightbooking.admin.dto.FlightRequestModel;
+import com.flightbooking.admin.dto.FlightResponseModel;
 import com.flightbooking.admin.service.FlightService;
 import com.flightbooking.admin.util.JsonResponseEntity;
 import com.flightbooking.admin.util.StringConstants;
@@ -26,11 +27,12 @@ public class FlightController {
 	private FlightService flightService;
 
 	@PostMapping(UrlConstants.CREATE_NEW_FLIGHT_ENTRY)
-	public ResponseEntity<JsonResponseEntity<FlightModel>> newFlight(@RequestBody final FlightModel request) {
+	public ResponseEntity<JsonResponseEntity<FlightResponseModel>> newFlight(
+			@RequestBody final FlightRequestModel request) {
 
-		JsonResponseEntity<FlightModel> response = new JsonResponseEntity<>();
+		JsonResponseEntity<FlightResponseModel> response = new JsonResponseEntity<>();
 
-		final FlightModel result = flightService.createNewFlightEntry(request);
+		final FlightResponseModel result = flightService.createNewFlightEntry(request);
 
 		response.setStatus(StringConstants.success);
 		response.setMessage(StringConstants.recordSavedSuccessMessage);
@@ -42,11 +44,11 @@ public class FlightController {
 	}
 
 	@GetMapping(UrlConstants.FETCH_FLIGHT_BY_NUMBER)
-	public ResponseEntity<JsonResponseEntity<FlightModel>> getFlightyNumber(
+	public ResponseEntity<JsonResponseEntity<FlightResponseModel>> getFlightyNumber(
 			@PathVariable(value = StringConstants.FLIGHT_NUMBER) final String flightNumber) {
-		JsonResponseEntity<FlightModel> response = new JsonResponseEntity<>();
+		JsonResponseEntity<FlightResponseModel> response = new JsonResponseEntity<>();
 
-		final FlightModel flightDtl = flightService.getDetailsByFlightNumber(flightNumber);
+		final FlightResponseModel flightDtl = flightService.getDetailsByFlightNumber(flightNumber);
 
 		response.setStatus(StringConstants.success);
 		response.setMessage(StringConstants.recordFetchSuccessMessage);
@@ -58,12 +60,12 @@ public class FlightController {
 	}
 
 	@GetMapping(UrlConstants.FTECH_FLIGHTS_BY_AIRLINE)
-	public ResponseEntity<JsonResponseEntity<List<FlightModel>>> getFlightsByAirline(
+	public ResponseEntity<JsonResponseEntity<List<FlightResponseModel>>> getFlightsByAirline(
 			@PathVariable(value = StringConstants.AIRLINE_ID) final Long airlineId) {
 
-		JsonResponseEntity<List<FlightModel>> response = new JsonResponseEntity<>();
+		JsonResponseEntity<List<FlightResponseModel>> response = new JsonResponseEntity<>();
 
-		final List<FlightModel> dataList = flightService.getAllFlightsByAirline(airlineId);
+		final List<FlightResponseModel> dataList = flightService.getAllFlightsByAirline(airlineId);
 
 		response.setStatus(StringConstants.success);
 		response.setMessage(StringConstants.recordFetchSuccessMessage);

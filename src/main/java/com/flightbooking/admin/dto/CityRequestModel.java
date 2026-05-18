@@ -11,13 +11,13 @@ import lombok.Setter;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class AirlineModel {
+public class CityRequestModel {
 
 	private Long recordId;
+	
+	private String cityCode;
 
-	private String airlineName;
+	private String cityName;
 
-	private String createBy;
-
-	private String modifiedBy;
+	private String countryCode;
 }
