@@ -17,7 +17,7 @@ public class FlightModel {
 
 	private String flightNumber;
 
-	private Integer airlineId;
+	private Long airlineId;
 
 	private String createdBy;
 

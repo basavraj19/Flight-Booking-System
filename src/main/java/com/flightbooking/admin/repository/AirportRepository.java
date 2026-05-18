@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import com.flightbooking.admin.entity.Airport;
 
 @Repository
-public interface AirportRepository extends JpaRepository<Airport, Integer> {
+public interface AirportRepository extends JpaRepository<Airport, Long> {
 
 	boolean existsByAirportCode(String airportCode);
 

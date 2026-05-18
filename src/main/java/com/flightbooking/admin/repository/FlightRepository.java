@@ -8,11 +8,11 @@ import org.springframework.stereotype.Repository;
 import com.flightbooking.admin.entity.Flight;
 
 @Repository
-public interface FlightRepository extends JpaRepository<Flight, Integer> {
+public interface FlightRepository extends JpaRepository<Flight, Long> {
 
 	boolean existsByFlightNumberIgnoreCase(String flightNumber);
 
 	Flight findByFlightNumber(String flightNumber);
 
-	List<Flight> findByAirlineId(int airlineId);
+	List<Flight> findByAirlineId(Long airlineId);
 }

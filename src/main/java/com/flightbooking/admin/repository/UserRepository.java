@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.flightbooking.admin.entity.UserAccount;
 
 @Repository
-public interface UserRepository extends JpaRepository<UserAccount, Integer> {
+public interface UserRepository extends JpaRepository<UserAccount, Long> {
 
 }

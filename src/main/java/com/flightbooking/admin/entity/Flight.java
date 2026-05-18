@@ -20,5 +20,5 @@ public class Flight extends BaseEntity {
 	private String flightNumber;
 
 	@Column(name = "airline_id", nullable = false)
-	private Integer airlineId;
+	private Long airlineId;
 }

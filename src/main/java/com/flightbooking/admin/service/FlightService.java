@@ -95,7 +95,7 @@ public class FlightService {
 	}
 
 	@Transactional(readOnly = true)
-	public List<FlightModel> getAllFlightsByAirline(int airlineId) {
+	public List<FlightModel> getAllFlightsByAirline(Long airlineId) {
 
 		if (airlineId <= NumericConstants.ZERO) {
 			throw new InvalidInputException("Invalid AirlineId.");

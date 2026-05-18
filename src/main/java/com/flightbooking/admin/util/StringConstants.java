@@ -27,4 +27,8 @@ public class StringConstants {
 	public static final String FLIGHT_NUMBER = "flightNumber";
 
 	public static final String flightNumberRegex = "^[a-zA-Z0-9]+$";
+	
+	public static final String FLIGHT_DETAILS = "flightDetails";
+	
+	public static final String AIRPORT_DETAILS = "airportDetails";
 }

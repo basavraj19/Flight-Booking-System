@@ -64,6 +64,7 @@ public class AirportService {
 			model.setRecordId(airport.getId());
 			model.setAirportCode(airport.getAirportCode());
 			model.setAirportName(airport.getAirportName());
+			model.setCityId(airport.getCityId());;
 			model.setCreatedBy(airport.getCreatedBy());
 			model.setModifiedBy(airport.getModifiedBy());
 		}

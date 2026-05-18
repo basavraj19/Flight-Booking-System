@@ -59,7 +59,7 @@ public class FlightController {
 
 	@GetMapping(UrlConstants.FTECH_FLIGHTS_BY_AIRLINE)
 	public ResponseEntity<JsonResponseEntity<List<FlightModel>>> getFlightsByAirline(
-			@PathVariable(value = StringConstants.AIRLINE_ID) final int airlineId) {
+			@PathVariable(value = StringConstants.AIRLINE_ID) final Long airlineId) {
 
 		JsonResponseEntity<List<FlightModel>> response = new JsonResponseEntity<>();
 
