@@ -1,0 +1,1 @@
+package com.flightbooking.apigateway.entity;
