@@ -1,0 +1,28 @@
+ALTER TABLE flight_booking.flight_schedule DROP CONSTRAINT chk_arrival_departure_time;
+
+ALTER TABLE flight_booking.flight_schedule modify column departure_time TIME NOT NULL;
+
+ALTER TABLE flight_booking.flight_schedule modify column arrival_time TIME NOT NULL;
+
+ALTER TABLE flight_booking.flight_schedule add column arrival_day_offset TINYINT DEFAULT 0;
+
+CREATE INDEX idx_flight_schedule_flight_id ON flight_schedule(flight_id);
+
+ALTER TABLE flight_schedule DROP INDEX uk_flight_schedule_unique;
+
+ALTER TABLE flight_schedule ADD CONSTRAINT uk_flight_schedule_unique
+UNIQUE (
+    flight_id,
+    source_airport_id,
+    destination_airport_id,
+    departure_time,
+    effective_from
+);
+
+
+ALTER TABLE flight_schedule ADD CONSTRAINT chk_arrival_offset
+    CHECK (
+        (arrival_day_offset = 0 AND arrival_time > departure_time)
+        OR
+        (arrival_day_offset = 1)
+);
