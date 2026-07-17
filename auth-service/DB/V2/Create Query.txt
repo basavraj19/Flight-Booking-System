@@ -1,0 +1,5 @@
+ALTER TABLE flight_booking.user_account ADD COLUMN role varchar(255) NOT NULL;
+
+ALTER TABLE flight_booking.user_account DROP COLUMN created_by;
+
+ALTER TABLE flight_booking.user_account DROP COLUMN modified_by;
