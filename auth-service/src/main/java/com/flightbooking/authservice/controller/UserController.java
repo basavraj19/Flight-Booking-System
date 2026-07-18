@@ -4,12 +4,15 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.flightbooking.authservice.dto.LoginRequestDto;
+import com.flightbooking.authservice.dto.UpdatePasswordRequest;
 import com.flightbooking.authservice.dto.UserAccountDto;
 import com.flightbooking.authservice.service.UserService;
 import com.flightbooking.authservice.util.JsonResponseEntity;
@@ -52,10 +55,37 @@ public class UserController {
 		JsonResponseEntity<UserAccountDto> response = new JsonResponseEntity<>();
 		response.setStatus(StringConstants.success);
 		response.setMessage(StringConstants.userLoggedInMessage);
-		response.setResult(null);
 		response.setException(null);
 		response.setStatusCode(HttpStatus.ACCEPTED);
 
 		return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, jwtCookie.toString()).body(response);
+	}
+
+	@PatchMapping(UrlConstants.updatePassword)
+	public ResponseEntity<JsonResponseEntity<?>> updatePassword(@RequestBody UpdatePasswordRequest request) {
+
+		userService.updateUserPassword(request);
+
+		JsonResponseEntity<?> response = new JsonResponseEntity<>();
+		response.setStatus(StringConstants.success);
+		response.setMessage(StringConstants.passwordUpdateMessage);
+		response.setException(null);
+		response.setStatusCode(HttpStatus.OK);
+
+		return new ResponseEntity<>(response, HttpStatus.OK);
+	}
+
+	@DeleteMapping(UrlConstants.deleteUser)
+	public ResponseEntity<JsonResponseEntity<?>> deleteUser(@RequestBody LoginRequestDto request) {
+
+		userService.deleteUserAccount(request);
+
+		JsonResponseEntity<?> response = new JsonResponseEntity<>();
+		response.setStatus(StringConstants.success);
+		response.setMessage(StringConstants.userDeletedMessage);
+		response.setException(null);
+		response.setStatusCode(HttpStatus.OK);
+
+		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 }

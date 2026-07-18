@@ -1,5 +1,6 @@
 package com.flightbooking.authservice.service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.flightbooking.authservice.dto.LoginRequestDto;
+import com.flightbooking.authservice.dto.UpdatePasswordRequest;
 import com.flightbooking.authservice.dto.UserAccountDto;
 import com.flightbooking.authservice.entity.UserAccount;
 import com.flightbooking.authservice.exception.DuplicateResourceException;
@@ -19,7 +21,6 @@ import com.flightbooking.authservice.exception.UserNotFoundException;
 import com.flightbooking.authservice.repository.UserRepository;
 import com.flightbooking.authservice.util.JWTUtils;
 
-import io.jsonwebtoken.lang.Arrays;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -39,61 +40,107 @@ public class UserService implements UserDetailsService {
 	}
 
 	@Transactional
-	public UserAccountDto createNewUser(final UserAccountDto user)
+	public UserAccountDto createNewUser(final UserAccountDto request)
 			throws InvalidInputException, DuplicateResourceException {
 
-		if (user == null) {
-			throw new InvalidInputException("Invalid User.");
-		}
-
-		if (user.getUsername().isEmpty() || user.getPassword().isEmpty()) {
-			throw new InvalidInputException("Invalid Username/Password.");
-		}
-
-		Optional<UserAccount> account = userRepository.findUserByUsername(user.getUsername());
-
-		if (account.isPresent()) {
-			throw new DuplicateResourceException("User with username " + user.getUsername() + " already exists.");
-		}
-
-		String encodedPassword = passwordEncoder.encode(user.getPassword());
-
-		UserAccount newUser = UserAccount.builder().username(user.getUsername()).password(encodedPassword)
-				.firstName(user.getFirstName()).lastName(user.getLastName()).phoneNumber(user.getPhoneNumber())
-				.role(user.getRole()).build();
-
-		userRepository.save(newUser);
-
-		return user;
-	}
-
-	public String loginUser(final LoginRequestDto request) throws InvalidInputException {
 		if (request == null) {
-			throw new InvalidInputException("Invalid User.");
+			throw new InvalidInputException("Invalid User request object.");
 		}
 
-		if (request.getUsername().isEmpty() || request.getPassword().isEmpty()) {
+		if (request.getUsername() == null || request.getUsername().isBlank() || request.getPassword() == null
+				|| request.getPassword().isBlank()) {
 			throw new InvalidInputException("Invalid Username/Password.");
 		}
 
 		Optional<UserAccount> account = userRepository.findUserByUsername(request.getUsername());
 
-		if (account.isEmpty()) {
-			throw new UserNotFoundException(request.getUsername() + " not found.");
+		if (account.isPresent()) {
+			throw new DuplicateResourceException("User with username " + request.getUsername() + " already exists.");
 		}
 
-		boolean isValidPassword = passwordEncoder.matches(request.getPassword(), account.get().getPassword());
+		String encodedPassword = passwordEncoder.encode(request.getPassword());
+
+		UserAccount user = UserAccount.builder().username(request.getUsername()).password(encodedPassword)
+				.firstName(request.getFirstName()).lastName(request.getLastName()).phoneNumber(request.getPhoneNumber())
+				.role(request.getRole()).build();
+
+		userRepository.save(user);
+
+		return UserAccountDto.builder().username(user.getUsername()).firstName(user.getFirstName())
+				.lastName(user.getLastName()).phoneNumber(user.getPhoneNumber()).role(user.getRole()).build();
+	}
+
+	@Transactional(readOnly = true)
+	public String loginUser(final LoginRequestDto request) throws InvalidInputException {
+		if (request == null) {
+			throw new InvalidInputException("Invalid User request object.");
+		}
+
+		if (request.getUsername() == null || request.getUsername().isBlank() || request.getPassword() == null
+				|| request.getPassword().isBlank()) {
+			throw new InvalidInputException("Invalid Username/Password.");
+		}
+
+		UserAccount user = validateAndGetUserDetails(request.getUsername(), request.getPassword());
+
+		List<String> roles = Arrays.stream(user.getRole().split(",")).map(String::trim).toList();
+
+		String token = jwtUtils.generateToken(request.getUsername(), roles);
+
+		return token;
+	}
+
+	@Transactional
+	public void updateUserPassword(final UpdatePasswordRequest request) throws InvalidInputException {
+		if (request == null) {
+			throw new InvalidInputException("Invalid User request object.");
+		}
+
+		if (request.getUsername() == null || request.getUsername().isBlank() || request.getOldPassword() == null
+				|| request.getOldPassword().isBlank() || request.getNewPassword() == null
+				|| request.getNewPassword().isBlank()) {
+
+			throw new InvalidInputException("Invalid Username/Password.");
+		}
+
+		UserAccount user = validateAndGetUserDetails(request.getUsername(), request.getOldPassword());
+
+		if (passwordEncoder.matches(request.getNewPassword(), user.getPassword())) {
+			throw new InvalidInputException("New password cannot be the same as the old password.");
+		}
+
+		String encodePassowd = passwordEncoder.encode(request.getNewPassword());
+		user.setPassword(encodePassowd);
+
+		userRepository.save(user);
+	}
+
+	private UserAccount validateAndGetUserDetails(final String username, final String password)
+			throws InvalidInputException {
+		UserAccount user = userRepository.findUserByUsername(username)
+				.orElseThrow(() -> new UserNotFoundException(username + " not found."));
+
+		boolean isValidPassword = passwordEncoder.matches(password, user.getPassword());
 
 		if (!isValidPassword) {
 			throw new InvalidInputException("Invalid Password.");
 		}
+		return user;
+	}
 
-		String[] roles = account.get().getRole().split(",");
+	@Transactional
+	public void deleteUserAccount(final LoginRequestDto request) {
+		if (request == null) {
+			throw new InvalidInputException("Invalid User request object.");
+		}
 
-		List<String> listOfRoles = Arrays.asList(roles);
+		if (request.getUsername() == null || request.getUsername().isBlank() || request.getPassword() == null
+				|| request.getPassword().isBlank()) {
+			throw new InvalidInputException("Invalid Username/Password.");
+		}
 
-		String token = jwtUtils.generateToken(request.getUsername(), listOfRoles);
+		UserAccount user = validateAndGetUserDetails(request.getUsername(), request.getPassword());
 
-		return token;
+		userRepository.deleteById(user.getId());
 	}
 }
