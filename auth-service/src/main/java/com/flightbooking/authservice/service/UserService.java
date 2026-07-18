@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.flightbooking.authservice.dto.LoginRequestDto;
 import com.flightbooking.authservice.dto.UpdatePasswordRequest;
+import com.flightbooking.authservice.dto.UpdateUserRequestDto;
 import com.flightbooking.authservice.dto.UserAccountDto;
 import com.flightbooking.authservice.entity.UserAccount;
 import com.flightbooking.authservice.exception.DuplicateResourceException;
@@ -73,6 +74,20 @@ public class UserService implements UserDetailsService {
 		return token;
 	}
 
+	@Transactional(readOnly = true)
+	public UserAccountDto getUserByUsername(final String username) throws InvalidInputException {
+
+		if (username == null || username.isBlank()) {
+			throw new InvalidInputException("Invalid Username.");
+		}
+
+		UserAccount user = userRepository.findUserByUsername(username)
+				.orElseThrow(() -> new UserNotFoundException(username + " not found."));
+
+		return UserAccountDto.builder().username(username).firstName(user.getFirstName()).lastName(user.getLastName())
+				.phoneNumber(user.getPhoneNumber()).role(user.getRole()).build();
+	}
+
 	@Transactional
 	public void updateUserPassword(final UpdatePasswordRequest request) throws InvalidInputException {
 
@@ -107,5 +122,21 @@ public class UserService implements UserDetailsService {
 		UserAccount user = validateAndGetUserDetails(request.getUsername(), request.getPassword());
 
 		userRepository.deleteById(user.getId());
+	}
+
+	@Transactional
+	public UpdateUserRequestDto updateUserDetails(final UpdateUserRequestDto user) {
+		UserAccount existingUser = userRepository.findUserByUsername(user.getUsername())
+				.orElseThrow(() -> new UserNotFoundException(user.getUsername() + " not found."));
+
+		existingUser.setFirstName(user.getFirstName());
+		existingUser.setLastName(user.getLastName());
+		existingUser.setPhoneNumber(user.getPhoneNumber());
+
+		userRepository.save(existingUser);
+
+		return UpdateUserRequestDto.builder().username(existingUser.getUsername())
+				.firstName(existingUser.getFirstName()).lastName(existingUser.getLastName())
+				.phoneNumber(existingUser.getPhoneNumber()).build();
 	}
 }

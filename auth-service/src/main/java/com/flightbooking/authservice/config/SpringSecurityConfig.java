@@ -20,10 +20,13 @@ public class SpringSecurityConfig {
 
 	private final AuthenticationProvider authenticationProvider;
 
+	private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http.csrf(csrf -> csrf.disable())
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+				.exceptionHandling(exception -> exception.authenticationEntryPoint(jwtAuthenticationEntryPoint))
 				.authenticationProvider(authenticationProvider)
 				.authorizeHttpRequests(
 						auth -> auth.requestMatchers("/user/signUp", "/user/login", "/swagger-ui/**", "/v3/api-docs/**")

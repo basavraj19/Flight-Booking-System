@@ -2,6 +2,7 @@ package com.flightbooking.authservice.config;
 
 import java.io.IOException;
 
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -26,6 +27,8 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
 	private final JWTUtils jwtUtils;
 
 	private final UserDetailsService userDetailsService;
+
+	private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -62,7 +65,12 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
 			}
 
 		} catch (Exception e) {
-			System.out.println("Invalid JWT: " + e.getMessage());
+			SecurityContextHolder.clearContext();
+
+			jwtAuthenticationEntryPoint.commence(request, response,
+					new BadCredentialsException("Invalid or expired JWT token", e));
+
+			return;
 		}
 
 		filterChain.doFilter(request, response);

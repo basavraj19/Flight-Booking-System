@@ -5,14 +5,18 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.flightbooking.authservice.dto.LoginRequestDto;
 import com.flightbooking.authservice.dto.UpdatePasswordRequest;
+import com.flightbooking.authservice.dto.UpdateUserRequestDto;
 import com.flightbooking.authservice.dto.UserAccountDto;
 import com.flightbooking.authservice.service.UserService;
 import com.flightbooking.authservice.util.JsonResponseEntity;
@@ -30,7 +34,7 @@ public class UserController {
 	private final UserService userService;
 
 	@PostMapping(UrlConstants.createNewUser)
-	public ResponseEntity<JsonResponseEntity<?>> createNewUser(@Valid @RequestBody UserAccountDto user) {
+	public ResponseEntity<JsonResponseEntity<UserAccountDto>> createNewUser(@Valid @RequestBody UserAccountDto user) {
 		final UserAccountDto newUser = userService.createNewUser(user);
 
 		JsonResponseEntity<UserAccountDto> response = new JsonResponseEntity<>();
@@ -48,7 +52,7 @@ public class UserController {
 
 		String jwtToken = userService.loginUser(request);
 
-		final long expiryTime = 5 * 60;
+		final long expiryTime = 1 * 60;
 
 		final ResponseCookie jwtCookie = ResponseCookie.from("jwtToken", jwtToken).httpOnly(true).secure(false)
 				.path("/").sameSite("Lax").maxAge(expiryTime).build();
@@ -60,6 +64,22 @@ public class UserController {
 		response.setStatusCode(HttpStatus.ACCEPTED);
 
 		return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, jwtCookie.toString()).body(response);
+	}
+
+	@GetMapping(UrlConstants.getUserDetails)
+	public ResponseEntity<JsonResponseEntity<UserAccountDto>> getUserDetails(
+			@RequestParam(StringConstants.username) final String username) {
+
+		final UserAccountDto newUser = userService.getUserByUsername(username);
+
+		JsonResponseEntity<UserAccountDto> response = new JsonResponseEntity<>();
+		response.setStatus(StringConstants.success);
+		response.setMessage(StringConstants.fetchUserDetailsSuccessMessage);
+		response.setResult(newUser);
+		response.setException(null);
+		response.setStatusCode(HttpStatus.OK);
+
+		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
 	@PatchMapping(UrlConstants.updatePassword)
@@ -84,6 +104,22 @@ public class UserController {
 		JsonResponseEntity<?> response = new JsonResponseEntity<>();
 		response.setStatus(StringConstants.success);
 		response.setMessage(StringConstants.userDeletedMessage);
+		response.setException(null);
+		response.setStatusCode(HttpStatus.OK);
+
+		return new ResponseEntity<>(response, HttpStatus.OK);
+	}
+
+	@PutMapping(UrlConstants.updateUser)
+	public ResponseEntity<JsonResponseEntity<UpdateUserRequestDto>> updateUserDetails(
+			@Valid @RequestBody UpdateUserRequestDto user) {
+
+		UpdateUserRequestDto updatedUser = userService.updateUserDetails(user);
+
+		JsonResponseEntity<UpdateUserRequestDto> response = new JsonResponseEntity<>();
+		response.setStatus(StringConstants.success);
+		response.setMessage(StringConstants.userUpdateMessage);
+		response.setResult(updatedUser);
 		response.setException(null);
 		response.setStatusCode(HttpStatus.OK);
 
