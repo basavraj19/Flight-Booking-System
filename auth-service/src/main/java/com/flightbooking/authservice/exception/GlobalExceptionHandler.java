@@ -1,7 +1,11 @@
 package com.flightbooking.authservice.exception;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -50,5 +54,23 @@ public class GlobalExceptionHandler {
 		response.setException(null);
 
 		return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+	}
+
+	@ExceptionHandler(MethodArgumentNotValidException.class)
+	public ResponseEntity<JsonResponseEntity<?>> handleMethodArgumentNotValidException(
+			final MethodArgumentNotValidException exception) {
+
+		JsonResponseEntity<List<?>> response = new JsonResponseEntity<>();
+
+		List<String> errors = exception.getBindingResult().getFieldErrors().stream().map(FieldError::getDefaultMessage)
+				.toList();
+
+		response.setStatus("Failed");
+		response.setMessage("Validation Failed");
+		response.setResult(errors);
+		response.setException(null);
+		response.setStatusCode(HttpStatus.BAD_REQUEST);
+
+		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 	}
 }

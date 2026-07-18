@@ -43,15 +43,6 @@ public class UserService implements UserDetailsService {
 	public UserAccountDto createNewUser(final UserAccountDto request)
 			throws InvalidInputException, DuplicateResourceException {
 
-		if (request == null) {
-			throw new InvalidInputException("Invalid User request object.");
-		}
-
-		if (request.getUsername() == null || request.getUsername().isBlank() || request.getPassword() == null
-				|| request.getPassword().isBlank()) {
-			throw new InvalidInputException("Invalid Username/Password.");
-		}
-
 		Optional<UserAccount> account = userRepository.findUserByUsername(request.getUsername());
 
 		if (account.isPresent()) {
@@ -72,14 +63,6 @@ public class UserService implements UserDetailsService {
 
 	@Transactional(readOnly = true)
 	public String loginUser(final LoginRequestDto request) throws InvalidInputException {
-		if (request == null) {
-			throw new InvalidInputException("Invalid User request object.");
-		}
-
-		if (request.getUsername() == null || request.getUsername().isBlank() || request.getPassword() == null
-				|| request.getPassword().isBlank()) {
-			throw new InvalidInputException("Invalid Username/Password.");
-		}
 
 		UserAccount user = validateAndGetUserDetails(request.getUsername(), request.getPassword());
 
@@ -92,16 +75,6 @@ public class UserService implements UserDetailsService {
 
 	@Transactional
 	public void updateUserPassword(final UpdatePasswordRequest request) throws InvalidInputException {
-		if (request == null) {
-			throw new InvalidInputException("Invalid User request object.");
-		}
-
-		if (request.getUsername() == null || request.getUsername().isBlank() || request.getOldPassword() == null
-				|| request.getOldPassword().isBlank() || request.getNewPassword() == null
-				|| request.getNewPassword().isBlank()) {
-
-			throw new InvalidInputException("Invalid Username/Password.");
-		}
 
 		UserAccount user = validateAndGetUserDetails(request.getUsername(), request.getOldPassword());
 
@@ -130,14 +103,6 @@ public class UserService implements UserDetailsService {
 
 	@Transactional
 	public void deleteUserAccount(final LoginRequestDto request) {
-		if (request == null) {
-			throw new InvalidInputException("Invalid User request object.");
-		}
-
-		if (request.getUsername() == null || request.getUsername().isBlank() || request.getPassword() == null
-				|| request.getPassword().isBlank()) {
-			throw new InvalidInputException("Invalid Username/Password.");
-		}
 
 		UserAccount user = validateAndGetUserDetails(request.getUsername(), request.getPassword());
 

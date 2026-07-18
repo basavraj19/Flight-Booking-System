@@ -19,6 +19,7 @@ import com.flightbooking.authservice.util.JsonResponseEntity;
 import com.flightbooking.authservice.util.StringConstants;
 import com.flightbooking.authservice.util.UrlConstants;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -29,7 +30,7 @@ public class UserController {
 	private final UserService userService;
 
 	@PostMapping(UrlConstants.createNewUser)
-	public ResponseEntity<JsonResponseEntity<?>> createNewUser(@RequestBody UserAccountDto user) {
+	public ResponseEntity<JsonResponseEntity<?>> createNewUser(@Valid @RequestBody UserAccountDto user) {
 		final UserAccountDto newUser = userService.createNewUser(user);
 
 		JsonResponseEntity<UserAccountDto> response = new JsonResponseEntity<>();
@@ -43,7 +44,7 @@ public class UserController {
 	}
 
 	@PostMapping(UrlConstants.loginUser)
-	public ResponseEntity<JsonResponseEntity<?>> loginUser(@RequestBody LoginRequestDto request) {
+	public ResponseEntity<JsonResponseEntity<?>> loginUser(@Valid @RequestBody LoginRequestDto request) {
 
 		String jwtToken = userService.loginUser(request);
 
@@ -62,7 +63,7 @@ public class UserController {
 	}
 
 	@PatchMapping(UrlConstants.updatePassword)
-	public ResponseEntity<JsonResponseEntity<?>> updatePassword(@RequestBody UpdatePasswordRequest request) {
+	public ResponseEntity<JsonResponseEntity<?>> updatePassword(@Valid @RequestBody UpdatePasswordRequest request) {
 
 		userService.updateUserPassword(request);
 
@@ -76,7 +77,7 @@ public class UserController {
 	}
 
 	@DeleteMapping(UrlConstants.deleteUser)
-	public ResponseEntity<JsonResponseEntity<?>> deleteUser(@RequestBody LoginRequestDto request) {
+	public ResponseEntity<JsonResponseEntity<?>> deleteUser(@Valid @RequestBody LoginRequestDto request) {
 
 		userService.deleteUserAccount(request);
 
