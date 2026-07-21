@@ -114,7 +114,7 @@ public class CountryService {
 		existingRecord.setCountryCode(countryCode);
 		existingRecord.setCountryName(record.getCountryName());
 
-		countryRepository.save(existingRecord);
+		existingRecord = countryRepository.save(existingRecord);
 
 		CountryResponseModel updateRecord = mapFieldsToCountryResponseModel(existingRecord);
 
