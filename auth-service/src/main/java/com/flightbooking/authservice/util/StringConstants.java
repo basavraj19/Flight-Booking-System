@@ -21,5 +21,4 @@ public class StringConstants {
 	public static final String userDeletedMessage = "Account deleted successfully.";
 
 	public static final String username = "username";
-
 }

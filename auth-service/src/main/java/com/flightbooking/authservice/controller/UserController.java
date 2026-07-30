@@ -52,7 +52,7 @@ public class UserController {
 
 		String jwtToken = userService.loginUser(request);
 
-		final long expiryTime = 1 * 60;
+		final long expiryTime = 5 * 60;
 
 		final ResponseCookie jwtCookie = ResponseCookie.from("jwtToken", jwtToken).httpOnly(true).secure(false)
 				.path("/").sameSite("Lax").maxAge(expiryTime).build();

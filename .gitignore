@@ -5,6 +5,7 @@ target/
 .project
 .classpath
 .settings/
+.factorypath
 
 # IntelliJ IDEA
 .idea/
