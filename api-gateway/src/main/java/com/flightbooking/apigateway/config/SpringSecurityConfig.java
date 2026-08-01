@@ -25,7 +25,7 @@ public class SpringSecurityConfig {
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.exceptionHandling(exception -> exception.authenticationEntryPoint(jwtAuthenticationEntryPoint))
 				.authorizeHttpRequests(auth -> auth
-						.requestMatchers("/auth/user/signUp", "/auth/user/login", "/swagger-ui/**", "/v3/api-docs/**")
+						.requestMatchers("/auth/user/signUp", "/auth/user/login", "/flight/search/", "/swagger-ui/**", "/v3/api-docs/**")
 						.permitAll().anyRequest().authenticated())
 				.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
