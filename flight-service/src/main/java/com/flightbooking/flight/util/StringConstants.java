@@ -1,4 +1,4 @@
-package com.flightbooking.admin.util;
+package com.flightbooking.flight.util;
 
 public class StringConstants {
 
@@ -17,14 +17,16 @@ public class StringConstants {
 	public static String recordFetchSuccessMessage = "Record Fetched Successfully.";
 
 	public static String requestFailedMessage = "Something Went Wrong.";
-
-	public static final String COUNTRY_CODE = "countryCode";
-
-	public static final String CITY_CODE = "cityCode";
-
+	
 	public static final String AIRLINE_ID = "airlineId";
 
-	public static final String AIRPORT_ID = "airportId";
+	public static final String FLIGHT_NUMBER = "flightNumber";
 
+	public static final String flightNumberRegex = "^[a-zA-Z0-9]+$";
+
+	public static final String FLIGHT_DETAILS = "flightDetails";
+
+	public static final String AIRPORT_DETAILS = "airportDetails";
+	
 	public static final String InvalidJWT = "Invalid or expired JWT token";
 }

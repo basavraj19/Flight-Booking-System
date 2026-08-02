@@ -25,14 +25,15 @@ public class AirportController {
 
 	@Autowired
 	private AirportService airportService;
-	
+
 	@PostMapping(UrlConstants.CREATE_NEW_AIRPORT)
-	public ResponseEntity<JsonResponseEntity<AirportResponseModel>> createNewAirlineEntry(@RequestBody final AirportRequestModel model) {
+	public ResponseEntity<JsonResponseEntity<AirportResponseModel>> createNewAirportEntry(
+			@RequestBody final AirportRequestModel model) {
 
 		JsonResponseEntity<AirportResponseModel> response = new JsonResponseEntity<>();
 
 		final AirportResponseModel newRecord = airportService.createNewEntry(model);
-		
+
 		response.setStatus(StringConstants.success);
 		response.setMessage(StringConstants.recordSavedSuccessMessage);
 		response.setResult(newRecord);
@@ -49,7 +50,7 @@ public class AirportController {
 		JsonResponseEntity<List<AirportResponseModel>> response = new JsonResponseEntity<>();
 
 		final List<AirportResponseModel> resultList = airportService.getAirportsCitywise(cityCode);
-		
+
 		response.setStatus(StringConstants.success);
 		response.setResult(resultList);
 		response.setMessage(StringConstants.recordFetchSuccessMessage);
@@ -58,4 +59,22 @@ public class AirportController {
 
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
+
+	@GetMapping(UrlConstants.FETCH_AIRPORT_BY_ID)
+	public ResponseEntity<JsonResponseEntity<AirportResponseModel>> getAirportById(
+			@PathVariable(value = StringConstants.AIRPORT_ID) final Long airportId) {
+
+		JsonResponseEntity<AirportResponseModel> response = new JsonResponseEntity<>();
+
+		final AirportResponseModel airport = airportService.getAirportById(airportId);
+
+		response.setStatus(StringConstants.success);
+		response.setMessage(StringConstants.recordFetchSuccessMessage);
+		response.setResult(airport);
+		response.setException(null);
+		response.setStatusCode(HttpStatus.CREATED);
+
+		return new ResponseEntity<>(response, HttpStatus.OK);
+	}
+
 }

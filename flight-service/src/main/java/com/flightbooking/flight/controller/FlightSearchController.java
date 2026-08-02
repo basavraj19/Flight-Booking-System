@@ -11,7 +11,7 @@ import com.flightbooking.flight.util.UrlConstants;
 @RequestMapping(UrlConstants.SEARCH)
 public class FlightSearchController {
 
-	@GetMapping("/")
+	@GetMapping("/abc")
 	public ResponseEntity<?> getAllFlights() {
 		return ResponseEntity.ok("Working");
 	}

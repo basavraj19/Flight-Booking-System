@@ -1,4 +1,4 @@
-package com.flightbooking.admin.dto;
+package com.flightbooking.flight.dto;
 
 import java.time.Instant;
 import java.time.LocalDate;

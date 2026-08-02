@@ -29,16 +29,13 @@ public class FlightSeatInventory {
 	private Long Id;
 
 	@Column(name = "flight_schedule_instance_id", nullable = false)
-	private Long FlightScheduleInstanceId;
+	private Long flightScheduleInstanceId;
 
 	@Column(name = "seat_class_id", nullable = false)
 	private Long seatClassId;
 	
 	@Column(name = "total_seats", nullable = false)
 	private int totalSeats;
-
-	@Column(name = "avaliable_seats", nullable = false)
-	private int avaliableSeats;
 
 	@Column(name = "booked_seats", nullable = false)
 	private int bookedSeats;
@@ -52,5 +49,4 @@ public class FlightSeatInventory {
 
 	@Column(name = "created_at", nullable = false)
 	private Instant createdAt;
-
 }

@@ -2,6 +2,7 @@ package com.flightbooking.flight.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,18 +17,22 @@ import lombok.experimental.SuperBuilder;
 @Entity
 public class SeatClass extends BaseEntity {
 
-	@Column(name = "seat_code", updatable = false)
+	@Column(name = "seat_code")
+	@NotNull
 	private String seatCode;
 
-	@Column(name = "name", updatable = false)
+	@Column(name = "name")
+	@NotNull
 	private String name;
 
-	@Column(name = "description", updatable = false)
+	@Column(name = "description")
 	private String description;
 
-	@Column(name = "display_order", updatable = false)
+	@Column(name = "display_order")
+	@NotNull
 	private int displayOrder;
 
-	@Column(name = "active", updatable = false)
+	@Column(name = "active")
+	@NotNull
 	private boolean active;
 }

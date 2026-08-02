@@ -1,4 +1,4 @@
-package com.flightbooking.admin.controller;
+package com.flightbooking.flight.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -9,12 +9,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.flightbooking.admin.dto.FlightScheduleRequest;
-import com.flightbooking.admin.dto.FlightScheduleResponse;
-import com.flightbooking.admin.service.FlightScheduleService;
-import com.flightbooking.admin.util.JsonResponseEntity;
-import com.flightbooking.admin.util.StringConstants;
-import com.flightbooking.admin.util.UrlConstants;
+import com.flightbooking.flight.dto.FlightScheduleRequest;
+import com.flightbooking.flight.dto.FlightScheduleResponse;
+import com.flightbooking.flight.service.FlightScheduleService;
+import com.flightbooking.flight.util.JsonResponseEntity;
+import com.flightbooking.flight.util.StringConstants;
+import com.flightbooking.flight.util.UrlConstants;
 
 @RestController
 @RequestMapping(UrlConstants.FLIGHT_SCHEDULE)

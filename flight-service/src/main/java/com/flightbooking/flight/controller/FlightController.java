@@ -1,4 +1,4 @@
-package com.flightbooking.admin.controller;
+package com.flightbooking.flight.controller;
 
 import java.util.List;
 
@@ -12,12 +12,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.flightbooking.admin.dto.FlightRequestModel;
-import com.flightbooking.admin.dto.FlightResponseModel;
-import com.flightbooking.admin.service.FlightService;
-import com.flightbooking.admin.util.JsonResponseEntity;
-import com.flightbooking.admin.util.StringConstants;
-import com.flightbooking.admin.util.UrlConstants;
+import com.flightbooking.flight.dto.FlightRequestModel;
+import com.flightbooking.flight.dto.FlightResponseModel;
+import com.flightbooking.flight.service.FlightService;
+import com.flightbooking.flight.util.JsonResponseEntity;
+import com.flightbooking.flight.util.StringConstants;
+import com.flightbooking.flight.util.UrlConstants;
 
 @RestController
 @RequestMapping(UrlConstants.FLIGHT)

@@ -1,4 +1,4 @@
-package com.flightbooking.admin.dto;
+package com.flightbooking.flight.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,11 +11,15 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class FlightRequestModel {
+public class FlightResponseModel {
 
 	private Long flightId;
 
 	private String flightNumber;
 
 	private Long airlineId;
+
+	private String createdBy;
+
+	private String modifiedBy;
 }

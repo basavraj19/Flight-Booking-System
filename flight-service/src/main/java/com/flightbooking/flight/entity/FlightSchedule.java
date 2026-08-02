@@ -39,7 +39,7 @@ public class FlightSchedule extends BaseEntity {
 
 	@Column(name = "scheduled_arrival_time")
 	@NotNull
-	private LocalTime scheduleArrivalTime;
+	private LocalTime scheduledArrivalTime;
 
 	@Column(name = "effective_from")
 	@NotNull
@@ -50,19 +50,19 @@ public class FlightSchedule extends BaseEntity {
 	private LocalDate effectiveTo;
 
 	@Column(name = "arrival_day_offset")
-	private Byte arrivaleDayOffset;
+	private Byte arrivalDayOffset;
 
 	@AssertTrue(message = "Arrival time must be greater than departure time.")
 	public boolean isArrivalTimeValid() {
 
-		if (scheduledDepartureTime == null || scheduleArrivalTime == null || arrivaleDayOffset == null) {
+		if (scheduledDepartureTime == null || scheduledArrivalTime == null || arrivalDayOffset == null) {
 			return true;
 		}
 
-		if (arrivaleDayOffset == 0) {
-			return scheduleArrivalTime.isAfter(scheduledDepartureTime);
+		if (arrivalDayOffset == 0) {
+			return scheduledArrivalTime.isAfter(scheduledDepartureTime);
 		} else {
-			return scheduleArrivalTime.isBefore(scheduledDepartureTime);
+			return scheduledArrivalTime.isBefore(scheduledDepartureTime);
 		}
 	}
 

@@ -28,7 +28,7 @@ public class FlightScheduleInstance extends BaseEntity {
 	@NotNull
 	private LocalDate travelDate;
 
-	@Column(name = "scheduled_departure_time")
+	@Column(name = "actual_departure_time")
 	@NotNull
 	private LocalTime actualDepartureTime;
 
@@ -42,7 +42,7 @@ public class FlightScheduleInstance extends BaseEntity {
 
 	@Column(name = "gate")
 	@NotNull
-	private int gate;
+	private String gate;
 
 	@Column(name = "terminal")
 	@NotNull

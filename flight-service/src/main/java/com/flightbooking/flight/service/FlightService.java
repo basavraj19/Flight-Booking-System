@@ -1,4 +1,4 @@
-package com.flightbooking.admin.service;
+package com.flightbooking.flight.service;
 
 import java.util.List;
 import java.util.regex.Pattern;
@@ -7,16 +7,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.flightbooking.admin.dto.FlightRequestModel;
-import com.flightbooking.admin.dto.FlightResponseModel;
-import com.flightbooking.admin.entity.Flight;
-import com.flightbooking.admin.exception.DuplicateResourceException;
-import com.flightbooking.admin.exception.InvalidInputException;
-import com.flightbooking.admin.exception.ResourceNotFoundException;
-import com.flightbooking.admin.repository.FlightRepository;
-import com.flightbooking.admin.util.CommonUtils;
-import com.flightbooking.admin.util.NumericConstants;
-import com.flightbooking.admin.util.StringConstants;
+import com.flightbooking.flight.dto.FlightRequestModel;
+import com.flightbooking.flight.dto.FlightResponseModel;
+import com.flightbooking.flight.entity.Flight;
+import com.flightbooking.flight.exception.DuplicateResourceException;
+import com.flightbooking.flight.exception.InvalidInputException;
+import com.flightbooking.flight.exception.ResourceNotFoundException;
+import com.flightbooking.flight.repository.FlightRepository;
+import com.flightbooking.flight.util.CommonUtils;
+import com.flightbooking.flight.util.NumericConstants;
+import com.flightbooking.flight.util.StringConstants;
 
 @Service
 public class FlightService {

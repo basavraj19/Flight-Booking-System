@@ -87,4 +87,19 @@ public class AirportService {
 
 		return resultSet;
 	}
+	
+	@Transactional(readOnly = true)
+	public AirportResponseModel getAirportById(final Long airportId) {
+		
+		if(airportId == null || airportId <= NumericConstants.ZERO) {
+			throw new InvalidInputException("Invalid Airport Id.");
+		}
+		
+		Airport airport = airportRepository.findById(airportId)
+				.orElseThrow(() -> new ResourceNotFoundException("Airport Not found."));
+		
+		final AirportResponseModel response = mapToAirportModel(airport);
+
+		return response;
+	}
 }
