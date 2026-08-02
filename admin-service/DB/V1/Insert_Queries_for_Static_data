@@ -1,0 +1,8 @@
+
+INSERT INTO seat_class
+(seat_code, name, description, display_order, active, created_by, created_at, modified_by, modified_at)
+VALUES
+('ECONOMY', 'Economy', 'Standard economy class seating', 1, TRUE, 'SYSTEM', NOW(), 'SYSTEM', NOW()),
+('PREMIUM_ECONOMY', 'Premium Economy', 'Extra legroom and enhanced comfort', 2, TRUE, 'SYSTEM', NOW(), 'SYSTEM', NOW()),
+('BUSINESS', 'Business', 'Premium seating with additional services', 3, TRUE, 'SYSTEM', NOW(), 'SYSTEM', NOW()),
+('FIRST', 'First Class', 'Luxury seating with exclusive services', 4, TRUE, 'SYSTEM', NOW(), 'SYSTEM', NOW());

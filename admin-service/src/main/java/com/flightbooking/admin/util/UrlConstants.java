@@ -35,4 +35,8 @@ public class UrlConstants {
 	public static final String FETCH_AIRPORT_BY_CITY = "/fetchAirportByCity/{cityCode}";
 	
 	public static final String FETCH_AIRPORT_BY_ID = "/fetchAirportById/{airportId}";
+	
+	public static final String SEATS = "/seats";
+	
+	public static final String GENERIC = "/";
 }
