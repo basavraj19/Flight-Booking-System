@@ -43,7 +43,7 @@ public class FlightScheduleService {
 
 		FlightSchedule newSchedule = FlightSchedule.builder().flightId(model.getFlightId())
 				.sourceAirportId(model.getSourceAirportId()).destinationAirportId(model.getDestinationAirportId())
-				.scheduledDepartureTime(model.getDepartureTime()).scheduledArrivalTime(model.getArrivalTime())
+				.departureTime(model.getDepartureTime()).arrivalTime(model.getArrivalTime())
 				.effectiveFrom(model.getEffectiveFrom()).effectiveTo(model.getEffectiveTo())
 				.arrivalDayOffset(model.getArrivalDayOffset()).build();
 
@@ -66,7 +66,7 @@ public class FlightScheduleService {
 
 			model = FlightScheduleResponse.builder().flightScheduleId(record.getId()).flightNumber(flightNumber)
 					.sourceAirportCode(sourceAirport).destinationAirportCode(destinationAirport)
-					.departureTime(record.getScheduledDepartureTime()).arrivalTime(record.getScheduledArrivalTime())
+					.departureTime(record.getDepartureTime()).arrivalTime(record.getArrivalTime())
 					.effectiveFrom(record.getEffectiveFrom()).effectiveTo(record.getEffectiveTo())
 					.arrivalDayOffset(record.getArrivalDayOffset()).createdBy(record.getCreatedBy())
 					.modifiedBy(record.getModifiedBy()).build();
@@ -93,8 +93,8 @@ public class FlightScheduleService {
 		existingRecord.setFlightId(model.getFlightId());
 		existingRecord.setSourceAirportId(model.getSourceAirportId());
 		existingRecord.setDestinationAirportId(model.getDestinationAirportId());
-		existingRecord.setScheduledDepartureTime(model.getDepartureTime());
-		existingRecord.setScheduledArrivalTime(model.getArrivalTime());
+		existingRecord.setDepartureTime(model.getDepartureTime());
+		existingRecord.setArrivalTime(model.getArrivalTime());
 		existingRecord.setEffectiveFrom(model.getEffectiveFrom());
 		existingRecord.setEffectiveTo(model.getEffectiveTo());
 		existingRecord.setArrivalDayOffset(model.getArrivalDayOffset());

@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,7 +16,6 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
 public class FlightScheduleInstance extends BaseEntity {
 
 	@Column(name = "flight_Schedule_id")

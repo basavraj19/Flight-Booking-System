@@ -1,0 +1,21 @@
+package com.flightbooking.flight.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+public class FlightSeatConfigurationRequestModel {
+
+	private Long flightId;
+
+	private Long seatClassId;
+
+	private Integer totalSeats;
+}

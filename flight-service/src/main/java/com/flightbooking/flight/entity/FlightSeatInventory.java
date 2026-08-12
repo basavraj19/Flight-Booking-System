@@ -2,6 +2,7 @@ package com.flightbooking.flight.entity;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.time.LocalDate;
 
 import org.springframework.data.annotation.CreatedBy;
 
@@ -10,6 +11,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -28,12 +30,16 @@ public class FlightSeatInventory {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long Id;
 
-	@Column(name = "flight_schedule_instance_id", nullable = false)
-	private Long flightScheduleInstanceId;
+	@Column(name = "flight_schedule_id", nullable = false)
+	private Long FlightScheduleId;
 
 	@Column(name = "seat_class_id", nullable = false)
 	private Long seatClassId;
-	
+
+	@Column(name = "travel_date")
+	@NotNull
+	private LocalDate travelDate;
+
 	@Column(name = "total_seats", nullable = false)
 	private int totalSeats;
 

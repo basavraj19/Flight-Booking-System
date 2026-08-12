@@ -21,4 +21,10 @@ public class UrlConstants {
 	public static final String ADMIN_SERVICE = "ADMIN-SERVICE";
 
 	public static final String GET_AIRPORT_BY_ID = "/airport/fetchAirportById/{airportId}";
+	
+	public static final String SEAT_INVENTORY = "/seatInventory";
+	
+	public static final String CREATE = "/create";
+	
+	public static final String UPDATE_FLIGHT_PRICE = "/updateFlightPrice";
 }

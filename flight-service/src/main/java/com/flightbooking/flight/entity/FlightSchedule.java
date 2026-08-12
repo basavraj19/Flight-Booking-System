@@ -33,13 +33,13 @@ public class FlightSchedule extends BaseEntity {
 	@NotNull
 	private Long destinationAirportId;
 
-	@Column(name = "scheduled_departure_time")
+	@Column(name = "departure_time")
 	@NotNull
-	private LocalTime scheduledDepartureTime;
+	private LocalTime departureTime;
 
-	@Column(name = "scheduled_arrival_time")
+	@Column(name = "arrival_time")
 	@NotNull
-	private LocalTime scheduledArrivalTime;
+	private LocalTime arrivalTime;
 
 	@Column(name = "effective_from")
 	@NotNull
@@ -55,14 +55,14 @@ public class FlightSchedule extends BaseEntity {
 	@AssertTrue(message = "Arrival time must be greater than departure time.")
 	public boolean isArrivalTimeValid() {
 
-		if (scheduledDepartureTime == null || scheduledArrivalTime == null || arrivalDayOffset == null) {
+		if (departureTime == null || arrivalTime == null || arrivalDayOffset == null) {
 			return true;
 		}
 
 		if (arrivalDayOffset == 0) {
-			return scheduledArrivalTime.isAfter(scheduledDepartureTime);
+			return arrivalTime.isAfter(departureTime);
 		} else {
-			return scheduledArrivalTime.isBefore(scheduledDepartureTime);
+			return arrivalTime.isBefore(departureTime);
 		}
 	}
 

@@ -124,6 +124,7 @@ CONSTRAINT uk_flight_number UNIQUE(flight_number),
 CONSTRAINT fk_flight_airline FOREIGN KEY (airline_id) REFERENCES airline (id)
 );
 
+
    
   CREATE TABLE flight_schedule (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
@@ -133,8 +134,8 @@ CONSTRAINT fk_flight_airline FOREIGN KEY (airline_id) REFERENCES airline (id)
     source_airport_id BIGINT NOT NULL,
     destination_airport_id BIGINT NOT NULL,
 
-    scheduled_departure_time TIME NOT NULL,
-    scheduled_arrival_time TIME NOT NULL,
+    departure_time TIME NOT NULL,
+    arrival_time TIME NOT NULL,
 
     arrival_day_offset TINYINT NOT NULL DEFAULT 0,
 
@@ -158,9 +159,9 @@ CONSTRAINT fk_flight_airline FOREIGN KEY (airline_id) REFERENCES airline (id)
 
     CONSTRAINT chk_arrival_departure_time
         CHECK (
-            (arrival_day_offset = 0 AND scheduled_arrival_time > scheduled_departure_time)
+            (arrival_day_offset = 0 AND arrival_time > departure_time)
             OR
-            (arrival_day_offset = 1 AND scheduled_arrival_time < scheduled_departure_time)
+            (arrival_day_offset = 1 AND arrival_time < departure_time)
         ),
 
     CONSTRAINT fk_flight_schedule_flight
@@ -178,7 +179,7 @@ CONSTRAINT fk_flight_airline FOREIGN KEY (airline_id) REFERENCES airline (id)
     CONSTRAINT uk_flight_schedule_unique
         UNIQUE (
             flight_id,
-            scheduled_departure_time,
+            departure_time,
             effective_from
         )
 );
@@ -216,13 +217,16 @@ CREATE TABLE flight_schedule_instance (
 
 );
 
+
 CREATE TABLE flight_seat_inventory (
 
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
 
-    flight_schedule_instance_id BIGINT NOT NULL,
+    flight_schedule_id BIGINT NOT NULL,
 
     seat_class_id BIGINT NOT NULL,
+
+    travel_date DATE NOT NULL,
 
     total_seats INT NOT NULL,
 
@@ -245,9 +249,9 @@ CREATE TABLE flight_seat_inventory (
     CONSTRAINT chk_price
         CHECK (price > 0),
 
-    CONSTRAINT fk_seat_inventory_schedule_instance
-        FOREIGN KEY (flight_schedule_instance_id)
-        REFERENCES flight_schedule_instance(id),
+    CONSTRAINT fk_seat_inventory_schedule
+        FOREIGN KEY (flight_schedule_id)
+        REFERENCES flight_schedule (id),
 
     CONSTRAINT fk_seat_inventory_seat_class
         FOREIGN KEY (seat_class_id)
@@ -255,7 +259,48 @@ CREATE TABLE flight_seat_inventory (
 
     CONSTRAINT uk_seat_inventory
         UNIQUE (
-            flight_schedule_instance_id,
+            flight_schedule_id,
+            seat_class_id,
+            travel_date
+        )
+);
+
+CREATE TABLE flight_seat_configuration (
+
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+
+    flight_id BIGINT NOT NULL,
+
+    seat_class_id BIGINT NOT NULL,
+
+    total_seats INT NOT NULL,
+
+    created_by VARCHAR(255) NOT NULL,
+
+    created_at TIMESTAMP NOT NULL,
+
+    modified_by VARCHAR(255) NOT NULL,
+
+    modified_at TIMESTAMP NOT NULL,
+
+    CONSTRAINT flight_seat_config_chk_total_seats
+        CHECK (total_seats > 0),
+
+    CONSTRAINT fk_flight_seat_configuration_flight
+        FOREIGN KEY (flight_id)
+        REFERENCES flight(id)
+        ON DELETE RESTRICT
+        ON UPDATE CASCADE,
+
+    CONSTRAINT fk_flight_seat_configuration_seat_class
+        FOREIGN KEY (seat_class_id)
+        REFERENCES seat_class(id)
+        ON DELETE RESTRICT
+        ON UPDATE CASCADE,
+
+    CONSTRAINT uk_flight_seat_configuration
+        UNIQUE (
+            flight_id,
             seat_class_id
         )
 );
