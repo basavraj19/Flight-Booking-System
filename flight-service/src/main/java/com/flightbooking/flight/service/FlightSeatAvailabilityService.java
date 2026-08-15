@@ -8,8 +8,8 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.flightbooking.flight.dto.FlightScheduleInstanceDetailsRequestModel;
-import com.flightbooking.flight.dto.FlightSeatPriceRequestModel;
+import com.flightbooking.flight.dto.FlightScheduleInstanceDetailsModel;
+import com.flightbooking.flight.dto.FlightSeatPriceModel;
 import com.flightbooking.flight.entity.FlightScheduleInstance;
 import com.flightbooking.flight.entity.FlightSeatAvailability;
 import com.flightbooking.flight.entity.FlightSeatConfiguration;
@@ -33,7 +33,7 @@ public class FlightSeatAvailabilityService {
 
 	@Transactional
 	public void createNewFlightSeatInventoryEntry(final Long flightScheduleId,
-			List<FlightScheduleInstanceDetailsRequestModel> model, List<FlightScheduleInstance> instances)
+			List<FlightScheduleInstanceDetailsModel> model, List<FlightScheduleInstance> instances)
 			throws InvalidInputException, ResourceNotFoundException {
 
 		final Long flightId = flightScheduleRepository.getFlightIdByFlightScheduleId(flightScheduleId);
@@ -62,18 +62,18 @@ public class FlightSeatAvailabilityService {
 
 			FlightScheduleInstance instance = instances.get(i);
 
-			FlightScheduleInstanceDetailsRequestModel details = model.get(i);
+			FlightScheduleInstanceDetailsModel details = model.get(i);
 
-			List<FlightSeatPriceRequestModel> seatPrices = details.getSeatPrices();
+			List<FlightSeatPriceModel> seatPrices = details.getSeatPrices();
 
 			if (seatPrices == null || seatPrices.isEmpty()) {
 				throw new InvalidInputException(
 						"Seat prices are required for travel date: " + instance.getTravelDate());
 			}
 
-			for (FlightSeatPriceRequestModel priceModel : seatPrices) {
+			for (FlightSeatPriceModel priceModel : seatPrices) {
 
-				if (priceModel.getSeatTypeId() == null || priceModel.getSeatTypeId() <= NumericConstants.ZERO) {
+				if (priceModel.getSeatClassId() == null || priceModel.getSeatClassId() <= NumericConstants.ZERO) {
 
 					throw new InvalidInputException("Invalid Seat Class Id.");
 				}
@@ -83,11 +83,11 @@ public class FlightSeatAvailabilityService {
 					throw new InvalidInputException("Seat price must be greater than zero.");
 				}
 
-				Integer totalSeats = seatConfigurationMap.get(priceModel.getSeatTypeId());
+				Integer totalSeats = seatConfigurationMap.get(priceModel.getSeatClassId());
 
 				if (totalSeats == null) {
 					throw new ResourceNotFoundException(
-							"Seat Class is not configured for this flight: " + priceModel.getSeatTypeId());
+							"Seat Class is not configured for this flight: " + priceModel.getSeatClassId());
 				}
 
 				FlightSeatAvailability availability = mapToObject(instance.getId(), priceModel, totalSeats);
@@ -99,11 +99,21 @@ public class FlightSeatAvailabilityService {
 		flightSeatAvailabilityRepository.saveAll(seatAvailabilityList);
 	}
 
-	private FlightSeatAvailability mapToObject(final Long flightScheduleInstanceId,
-			final FlightSeatPriceRequestModel model, final int totalSeats) {
+	private FlightSeatAvailability mapToObject(final Long flightScheduleInstanceId, final FlightSeatPriceModel model,
+			final int totalSeats) {
 
 		return FlightSeatAvailability.builder().flightScheduleInstanceId(flightScheduleInstanceId)
-				.seatClassId(model.getSeatTypeId()).totalSeats(totalSeats).bookedSeats(NumericConstants.ZERO)
+				.seatClassId(model.getSeatClassId()).totalSeats(totalSeats).bookedSeats(NumericConstants.ZERO)
 				.price(model.getPrice()).build();
+	}
+
+	@Transactional(readOnly = true)
+	public List<FlightSeatAvailability> getSeatAvailabilityByInstanceIds(final List<Long> flightScheduleInstanceIds) {
+
+		if (flightScheduleInstanceIds == null || flightScheduleInstanceIds.isEmpty()) {
+			throw new InvalidInputException("Flight Schedule Instance Ids are required.");
+		}
+
+		return flightSeatAvailabilityRepository.findByFlightScheduleInstanceIdIn(flightScheduleInstanceIds);
 	}
 }

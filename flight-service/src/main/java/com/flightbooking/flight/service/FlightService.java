@@ -95,7 +95,7 @@ public class FlightService {
 	}
 
 	@Transactional(readOnly = true)
-	public List<FlightResponseModel> getAllFlightsByAirline(Long airlineId) {
+	public List<FlightResponseModel> getAllFlightsByAirline(final Long airlineId) {
 
 		if (airlineId <= NumericConstants.ZERO) {
 			throw new InvalidInputException("Invalid AirlineId.");
@@ -110,5 +110,11 @@ public class FlightService {
 		List<FlightResponseModel> dataList = flights.stream().map(this::mapToFlightModel).toList();
 
 		return dataList;
+	}
+
+	@Transactional(readOnly = true)
+	public List<Flight> getFlightById(final List<Long> flighIds) {
+
+		return flightRepository.findAllById(flighIds);
 	}
 }

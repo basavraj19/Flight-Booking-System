@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.flightbooking.admin.dto.AirlineRequestModel;
@@ -41,7 +42,7 @@ public class AirlineController {
 
 		return new ResponseEntity<>(response, HttpStatus.CREATED);
 	}
-	
+
 	@GetMapping(UrlConstants.FETCH_AIRLINE)
 	public ResponseEntity<JsonResponseEntity<List<AirlineResponseModel>>> getAllAirlines() {
 
@@ -52,6 +53,23 @@ public class AirlineController {
 		response.setStatus(StringConstants.success);
 		response.setMessage(StringConstants.recordSavedSuccessMessage);
 		response.setResult(recordList);
+		response.setException(null);
+		response.setStatusCode(HttpStatus.OK);
+
+		return new ResponseEntity<>(response, HttpStatus.OK);
+	}
+
+	@GetMapping(UrlConstants.FETCH_AIRLINE_BY_ID)
+	public ResponseEntity<JsonResponseEntity<List<AirlineResponseModel>>> getAirlineById(
+			@RequestParam(StringConstants.AIRLINE_IDS) final List<Long> airlineIds) {
+
+		JsonResponseEntity<List<AirlineResponseModel>> response = new JsonResponseEntity<>();
+
+		List<AirlineResponseModel> result = airlineService.getAirlinesByIds(airlineIds);
+
+		response.setStatus(StringConstants.success);
+		response.setMessage(StringConstants.recordFetchSuccessMessage);
+		response.setResult(result);
 		response.setException(null);
 		response.setStatusCode(HttpStatus.OK);
 

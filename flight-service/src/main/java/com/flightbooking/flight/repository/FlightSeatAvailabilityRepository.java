@@ -1,5 +1,6 @@
 package com.flightbooking.flight.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,4 +13,6 @@ public interface FlightSeatAvailabilityRepository extends JpaRepository<FlightSe
 
 	Optional<FlightSeatAvailability> findByFlightScheduleInstanceIdAndSeatClassId(Long flightScheduleInstanceId,
 			Long seatTypeId);
+
+	List<FlightSeatAvailability> findByFlightScheduleInstanceIdIn(List<Long> flightScheduleInstanceIds);
 }

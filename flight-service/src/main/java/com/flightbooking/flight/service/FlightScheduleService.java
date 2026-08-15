@@ -1,6 +1,8 @@
 package com.flightbooking.flight.service;
 
+import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -152,5 +154,12 @@ public class FlightScheduleService {
 		referenceMap.put(StringConstants.AIRPORT_DETAILS, airportDetailsMap);
 
 		return referenceMap;
+	}
+
+	@Transactional(readOnly = true)
+	public List<FlightSchedule> getFlightSchedules(final List<Long> sourceAirportIds,
+			final List<Long> destinationAirportIds, final LocalDate startDate, final LocalDate endDate) {
+
+		return flightScheduleRepository.getFlightSchedules(sourceAirportIds, destinationAirportIds, startDate, endDate);
 	}
 }

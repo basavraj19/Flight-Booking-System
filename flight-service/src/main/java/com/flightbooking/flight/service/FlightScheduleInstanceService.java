@@ -1,12 +1,13 @@
 package com.flightbooking.flight.service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.flightbooking.flight.dto.FlightScheduleInstanceDetailsRequestModel;
+import com.flightbooking.flight.dto.FlightScheduleInstanceDetailsModel;
 import com.flightbooking.flight.dto.FlightScheduleInstanceRequestModel;
 import com.flightbooking.flight.dto.UpdateFlightPriceRequestModel;
 import com.flightbooking.flight.dto.UpdateFlightScheduleInstanceRequestModel;
@@ -54,7 +55,7 @@ public class FlightScheduleInstanceService {
 		/*
 		 * Create FlightScheduleInstance objects first.
 		 */
-		for (FlightScheduleInstanceDetailsRequestModel item : model.getInstances()) {
+		for (FlightScheduleInstanceDetailsModel item : model.getInstances()) {
 
 			if (item == null || item.getTravelDate() == null) {
 				throw new InvalidInputException("Travel date is required.");
@@ -152,5 +153,12 @@ public class FlightScheduleInstanceService {
 		flightSeatAvailabilityRepository.save(entry);
 
 		return true;
+	}
+
+	@Transactional(readOnly = true)
+	public List<FlightScheduleInstance> getFlightScheduleInstances(final List<Long> flightScheduleIds,
+			final LocalDate startDate, final LocalDate endDate) {
+
+		return flightScheduleInstanceRepository.getFlightSchedulesInstances(flightScheduleIds, startDate, endDate);
 	}
 }

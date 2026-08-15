@@ -1,23 +1,28 @@
 package com.flightbooking.flight.dto;
 
-import java.util.List;
+import java.time.LocalDate;
 
 import jakarta.validation.constraints.NotNull;
-
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class FlightScheduleInstanceRequestModel {
+public class SearchFlightRequestModel {
 
 	@NotNull
-	private Long flightScheduleId;
+	private String sourceCityCode;
 
 	@NotNull
-	private List<FlightScheduleInstanceDetailsModel> instances;
+	private String destinationCityCode;
+
+	@NotNull
+	private LocalDate travelDate;
+	
 }

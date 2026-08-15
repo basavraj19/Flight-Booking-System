@@ -23,6 +23,8 @@ public class StringConstants {
 	public static final String CITY_CODE = "cityCode";
 
 	public static final String AIRLINE_ID = "airlineId";
+	
+	public static final String AIRLINE_IDS = "airlineIds";
 
 	public static final String AIRPORT_ID = "airportId";
 

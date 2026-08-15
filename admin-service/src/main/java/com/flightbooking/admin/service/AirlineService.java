@@ -69,4 +69,17 @@ public class AirlineService {
 
 		return resultSet;
 	}
+
+	@Transactional(readOnly = true)
+	public List<AirlineResponseModel> getAirlinesByIds(final List<Long> airlineIds) {
+
+		if (airlineIds == null || airlineIds.isEmpty()) {
+			throw new InvalidInputException("Invalid Airline Ids.");
+		}
+
+		List<Airline> airlines = airlineRepository.findAllById(airlineIds);
+
+		return airlines.stream().map(airline -> AirlineResponseModel.builder().recordId(airline.getId())
+				.airlineName(airline.getAirlineName()).build()).toList();
+	}
 }

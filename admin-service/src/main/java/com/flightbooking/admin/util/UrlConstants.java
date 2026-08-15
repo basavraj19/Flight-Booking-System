@@ -27,6 +27,8 @@ public class UrlConstants {
 	public static final String CREATE_NEW_AIRLINE = "/create";
 
 	public static final String FETCH_AIRLINE = "/getAllAirlines";
+	
+	public static final String FETCH_AIRLINE_BY_ID = "/{airlineId}";
 
 	public static final String AIRPORT = "/airport";
 
