@@ -192,15 +192,15 @@ CREATE TABLE flight_schedule_instance (
 
     travel_date DATE NOT NULL,
 
-    actual_departure_time TIME NOT NULL,
+    actual_departure_time TIME,
 
-    actual_arrival_time TIME NOT NULL,
+    actual_arrival_time TIME,
 
     status VARCHAR(50) NOT NULL,
 
-    gate VARCHAR(100) NOT NULL,
+    gate VARCHAR(100),
 
-    terminal VARCHAR(100) NOT NULL,
+    terminal VARCHAR(100),
 
     created_by VARCHAR(255) NOT NULL,
     created_at TIMESTAMP NOT NULL,
@@ -213,20 +213,28 @@ CREATE TABLE flight_schedule_instance (
         REFERENCES flight_schedule(id),
 
     CONSTRAINT uk_flight_schedule_instance
-        UNIQUE (flight_schedule_id, travel_date)
+        UNIQUE (flight_schedule_id, travel_date),
 
+    CONSTRAINT chk_flight_schedule_instance_status
+        CHECK (
+            status IN (
+                'SCHEDULED',
+                'DELAYED',
+                'BOARDING',
+                'DEPARTED',
+                'ARRIVED',
+                'CANCELLED'
+            )
+        )
 );
 
-
-CREATE TABLE flight_seat_inventory (
+CREATE TABLE flight_seat_availability (
 
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
 
-    flight_schedule_id BIGINT NOT NULL,
+    flight_schedule_instance_id BIGINT NOT NULL,
 
     seat_class_id BIGINT NOT NULL,
-
-    travel_date DATE NOT NULL,
 
     total_seats INT NOT NULL,
 
@@ -236,7 +244,7 @@ CREATE TABLE flight_seat_inventory (
 
     created_by VARCHAR(255) NOT NULL,
     created_at TIMESTAMP NOT NULL,
-    
+
     CONSTRAINT chk_total_seats
         CHECK (total_seats > 0),
 
@@ -249,19 +257,18 @@ CREATE TABLE flight_seat_inventory (
     CONSTRAINT chk_price
         CHECK (price > 0),
 
-    CONSTRAINT fk_seat_inventory_schedule
-        FOREIGN KEY (flight_schedule_id)
-        REFERENCES flight_schedule (id),
+    CONSTRAINT fk_seat_availability_schedule_instance
+        FOREIGN KEY (flight_schedule_instance_id)
+        REFERENCES flight_schedule_instance(id),
 
-    CONSTRAINT fk_seat_inventory_seat_class
+    CONSTRAINT fk_seat_availability_seat_class
         FOREIGN KEY (seat_class_id)
         REFERENCES seat_class(id),
 
-    CONSTRAINT uk_seat_inventory
+    CONSTRAINT uk_seat_availability
         UNIQUE (
-            flight_schedule_id,
-            seat_class_id,
-            travel_date
+            flight_schedule_instance_id,
+            seat_class_id
         )
 );
 

@@ -1,7 +1,6 @@
 package com.flightbooking.flight.dto;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,13 +13,9 @@ import lombok.Setter;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class FlightPriceRequestModel {
-
-	private Long FlightScheduleId;
-
+public class FlightSeatPriceRequestModel {
+	
 	private Long seatTypeId;
 
 	private BigDecimal price;
-
-	private LocalDate travelDate;
 }

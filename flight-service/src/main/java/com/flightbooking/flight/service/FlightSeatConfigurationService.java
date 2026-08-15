@@ -24,19 +24,6 @@ public class FlightSeatConfigurationService {
 
 	private final FlightRepository flightRepository;
 
-	@Transactional(readOnly = true)
-	public List<FlightSeatConfiguration> getFlightSeatConfigurationByFlightId(final Long flightId)
-			throws ResourceNotFoundException {
-
-		if (flightId == null || flightId <= NumericConstants.ZERO) {
-			throw new InvalidInputException("Invalid Flight Id.");
-		}
-
-		List<FlightSeatConfiguration> data = flightSeatConfigurationRepository.findByFlightId(flightId);
-
-		return data;
-	}
-
 	@Transactional
 	public Boolean createFlightSeatConfiguration(final FlightSeatConfigurationRequestModel model)
 			throws InvalidInputException, ResourceNotFoundException, DuplicateResourceException {
@@ -60,6 +47,19 @@ public class FlightSeatConfigurationService {
 		flightSeatConfigurationRepository.save(configuration);
 
 		return true;
+	}
+	
+	@Transactional(readOnly = true)
+	public List<FlightSeatConfiguration> getFlightSeatConfigurationByFlightId(final Long flightId)
+			throws ResourceNotFoundException {
+
+		if (flightId == null || flightId <= NumericConstants.ZERO) {
+			throw new InvalidInputException("Invalid Flight Id.");
+		}
+
+		List<FlightSeatConfiguration> data = flightSeatConfigurationRepository.findByFlightId(flightId);
+
+		return data;
 	}
 
 	@Transactional

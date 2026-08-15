@@ -3,7 +3,12 @@ package com.flightbooking.flight.entity;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+import com.flightbooking.flight.util.FlightStatus;
+
 import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,9 +21,10 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
 public class FlightScheduleInstance extends BaseEntity {
 
-	@Column(name = "flight_Schedule_id")
+	@Column(name = "flight_schedule_id")
 	@NotNull
 	private Long flightScheduleId;
 
@@ -27,22 +33,19 @@ public class FlightScheduleInstance extends BaseEntity {
 	private LocalDate travelDate;
 
 	@Column(name = "actual_departure_time")
-	@NotNull
 	private LocalTime actualDepartureTime;
 
 	@Column(name = "actual_arrival_time")
-	@NotNull
 	private LocalTime actualArrivalTime;
 
+	@Enumerated(EnumType.STRING)
 	@Column(name = "status")
 	@NotNull
-	private String status;
+	private FlightStatus status;
 
 	@Column(name = "gate")
-	@NotNull
 	private String gate;
 
 	@Column(name = "terminal")
-	@NotNull
 	private String terminal;
 }

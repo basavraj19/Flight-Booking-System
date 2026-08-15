@@ -21,10 +21,27 @@ public class UrlConstants {
 	public static final String ADMIN_SERVICE = "ADMIN-SERVICE";
 
 	public static final String GET_AIRPORT_BY_ID = "/airport/fetchAirportById/{airportId}";
-	
+
 	public static final String SEAT_INVENTORY = "/seatInventory";
-	
+
 	public static final String CREATE = "/create";
+
+	public static final String FLIGHT_SCHEDULE_INSTANCE = "/flightScheduleInstance";
+
+	public static final String CREATE_FLIGHT_SCHEDULE_INSTANCE = "/create";
+
+	public static final String UPDATE_FLIGHT_SCHEDULE_INSTANCE = "/updateInstance/{id}";
+
+	public static final String UPDATE_FLIGHT_SCHEDULE_INSTANCE_STATUS = "/updateStatus/{id}";
+
+	public static final String FLIGHT_SEAT_CONFIGURATION = "/seatConfig";
+
+	public static final String CREATE_FLIGHT_SEAT_CONFIGURATION = "/create";
+
+	public static final String GET_FLIGHT_SEAT_CONFIGURATION = "/fetch";
+
+	public static final String UPDATE_FLIGHT_SEAT_CONFIGURATION = "/update/{id}";
 	
-	public static final String UPDATE_FLIGHT_PRICE = "/updateFlightPrice";
+	public static final String UPDATE_FLIGHT_SCHEDULE_INSTANCE_PRICE = "/updateFlightPrice";
+
 }
