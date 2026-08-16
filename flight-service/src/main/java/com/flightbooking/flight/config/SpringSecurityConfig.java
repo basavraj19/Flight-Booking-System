@@ -1,4 +1,4 @@
-package com.flightbooking.apigateway.config;
+package com.flightbooking.flight.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,11 +24,8 @@ public class SpringSecurityConfig {
 		http.csrf(csrf -> csrf.disable())
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.exceptionHandling(exception -> exception.authenticationEntryPoint(jwtAuthenticationEntryPoint))
-				.authorizeHttpRequests(
-						auth -> auth
-								.requestMatchers("/auth/user/signUp", "/auth/user/login",
-										"/flight/flight/searchFlights/", "/swagger-ui/**", "/v3/api-docs/**")
-								.permitAll().anyRequest().authenticated())
+				.authorizeHttpRequests(auth -> auth.requestMatchers("/flight/searchFlights/", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
+						.anyRequest().authenticated())
 				.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
 		return http.build();

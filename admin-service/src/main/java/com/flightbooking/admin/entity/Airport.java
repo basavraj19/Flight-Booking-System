@@ -20,7 +20,7 @@ import lombok.experimental.SuperBuilder;
 		@UniqueConstraint(name = "uk_airport_name_city", columnNames = { "airport_name", "city_id" }) })
 public class Airport extends BaseEntity {
 
-	@Column(name = "airport_code", unique = true, nullable = false, length = 3)
+	@Column(name = "airport_code", unique = true, nullable = false, length = 10)
 	private String airportCode;
 
 	@Column(name = "airport_name", nullable = false)

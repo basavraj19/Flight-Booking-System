@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.flightbooking.flight.dto.AirlineResponseModel;
 import com.flightbooking.flight.dto.AirportResponseModel;
+import com.flightbooking.flight.dto.SeatClassResponseModel;
 import com.flightbooking.flight.util.JsonResponseEntity;
 import com.flightbooking.flight.util.UrlConstants;
 
@@ -17,12 +18,17 @@ import com.flightbooking.flight.util.UrlConstants;
 public interface AdminService {
 
 	@GetMapping(UrlConstants.GET_AIRPORT_BY_ID)
-	public JsonResponseEntity<AirportResponseModel> getAirportDetailsById(@PathVariable final Long airportId);
+	public ResponseEntity<JsonResponseEntity<AirportResponseModel>> getAirportDetailsById(
+			@PathVariable final Long airportId);
 
 	@GetMapping(UrlConstants.FETCH_AIRPORT_BY_CITY)
-	public ResponseEntity<List<AirportResponseModel>> getAirportDetailsByCityCode(@PathVariable final String cityCode);
+	public ResponseEntity<JsonResponseEntity<List<AirportResponseModel>>> getAirportDetailsByCityCode(
+			@PathVariable final String cityCode);
 
 	@GetMapping(UrlConstants.FETCH_AIRLINE_BY_ID)
-	public ResponseEntity<List<AirlineResponseModel>> getAirlineById(@RequestParam final List<Long> airlineIds);
+	public ResponseEntity<JsonResponseEntity<List<AirlineResponseModel>>> getAirlineById(
+			@RequestParam final List<Long> airlineIds);
 
+	@GetMapping(UrlConstants.FETCH_SEAT_DETILS_SEATS)
+	public ResponseEntity<JsonResponseEntity<List<SeatClassResponseModel>>> getSeatDetails();
 }

@@ -23,7 +23,7 @@ public class SeatClassController {
 
 	private final SeatClassService seatClassService;
 
-	@GetMapping(UrlConstants.GENERIC)
+	@GetMapping(UrlConstants.SEAT_DETAILS)
 	public ResponseEntity<JsonResponseEntity<List<SeatClassResponseModel>>> getAllSeatTypes() {
 		JsonResponseEntity<List<SeatClassResponseModel>> response = new JsonResponseEntity<>();
 

@@ -5,7 +5,9 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.flightbooking.flight.client.AdminService;
 import com.flightbooking.flight.dto.FlightSeatConfigurationRequestModel;
+import com.flightbooking.flight.dto.SeatClassResponseModel;
 import com.flightbooking.flight.entity.FlightSeatConfiguration;
 import com.flightbooking.flight.exception.DuplicateResourceException;
 import com.flightbooking.flight.exception.InvalidInputException;
@@ -23,6 +25,8 @@ public class FlightSeatConfigurationService {
 	private final FlightSeatConfigurationRepository flightSeatConfigurationRepository;
 
 	private final FlightRepository flightRepository;
+
+	private final AdminService adminService;
 
 	@Transactional
 	public Boolean createFlightSeatConfiguration(final FlightSeatConfigurationRequestModel model)
@@ -48,7 +52,7 @@ public class FlightSeatConfigurationService {
 
 		return true;
 	}
-	
+
 	@Transactional(readOnly = true)
 	public List<FlightSeatConfiguration> getFlightSeatConfigurationByFlightId(final Long flightId)
 			throws ResourceNotFoundException {
@@ -112,6 +116,13 @@ public class FlightSeatConfigurationService {
 
 		if (!flightRepository.existsById(model.getFlightId())) {
 			throw new ResourceNotFoundException("Flight not found.");
+		}
+
+		List<SeatClassResponseModel> seatDetails = adminService.getSeatDetails().getBody().getResult();
+		boolean exists = seatDetails.stream().anyMatch(seat -> seat.getRecordId().equals(model.getSeatClassId()));
+
+		if (!exists) {
+			throw new InvalidInputException("Invalid Seat Class Id.");
 		}
 	}
 }

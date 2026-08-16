@@ -33,7 +33,7 @@ public class SeatClassService {
 
 	private SeatClassResponseModel mapToObj(final SeatClass seat) {
 
-		SeatClassResponseModel response = SeatClassResponseModel.builder().seatCode(seat.getSeatCode())
+		SeatClassResponseModel response = SeatClassResponseModel.builder().recordId(seat.getId()).seatCode(seat.getSeatCode())
 				.name(seat.getName()).description(seat.getDescription()).displayOrder(seat.getDisplayOrder())
 				.active(seat.isActive()).build();
 

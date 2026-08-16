@@ -33,7 +33,7 @@ public class AirportService {
 		String airportCode = model.getAirportCode().trim().toUpperCase();
 
 		if (!StringUtils.hasText(airportCode)
-				|| !(airportCode.length() >= NumericConstants.TWO && airportCode.length() <= NumericConstants.THREE)) {
+				|| !(airportCode.length() >= NumericConstants.TWO && airportCode.length() <= NumericConstants.TEN)) {
 			throw new InvalidInputException("Invalid Airport Code.");
 		}
 

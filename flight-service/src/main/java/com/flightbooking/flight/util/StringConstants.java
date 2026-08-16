@@ -19,6 +19,8 @@ public class StringConstants {
 	public static String requestFailedMessage = "Something Went Wrong.";
 	
 	public static final String AIRLINE_ID = "airlineId";
+	
+	public static final String FLIGHT_ID = "flightId";
 
 	public static final String FLIGHT_NUMBER = "flightNumber";
 

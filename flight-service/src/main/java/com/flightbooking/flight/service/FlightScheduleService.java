@@ -133,10 +133,11 @@ public class FlightScheduleService {
 		Flight flightDetails = flightRepository.findById(model.getFlightId())
 				.orElseThrow(() -> new ResourceNotFoundException("Invalid Flight Id."));
 
-		AirportResponseModel sourceAirport = adminService.getAirportDetailsById(model.getSourceAirportId()).getResult();
+		AirportResponseModel sourceAirport = adminService.getAirportDetailsById(model.getSourceAirportId()).getBody()
+				.getResult();
 
 		AirportResponseModel destinationAirport = adminService.getAirportDetailsById(model.getDestinationAirportId())
-				.getResult();
+				.getBody().getResult();
 
 		if (sourceAirport.getCityId().equals(destinationAirport.getCityId())) {
 			throw new InvalidInputException("Source and destination cities cannot be same.");

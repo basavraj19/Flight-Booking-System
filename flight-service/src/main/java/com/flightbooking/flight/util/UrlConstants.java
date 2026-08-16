@@ -18,7 +18,7 @@ public class UrlConstants {
 
 	public static final String ADMIN_SERVICE = "ADMIN-SERVICE";
 
-	public static final String GET_AIRPORT_BY_ID = "/airport/fetchAirportById/{airportId}";
+	public static final String GET_AIRPORT_BY_ID = "/admin/airport/fetchAirportById/{airportId}";
 
 	public static final String CREATE = "/create";
 
@@ -31,10 +31,12 @@ public class UrlConstants {
 	public static final String UPDATE_FLIGHT_SCHEDULE_INSTANCE_STATUS = "/updateStatus/{id}";
 
 	public static final String FLIGHT_SEAT_CONFIGURATION = "/seatConfig";
+	
+	public static final String FETCH_SEAT_DETILS_SEATS = "/admin/seats/fetchDetails";
 
 	public static final String CREATE_FLIGHT_SEAT_CONFIGURATION = "/create";
 
-	public static final String GET_FLIGHT_SEAT_CONFIGURATION = "/fetch";
+	public static final String GET_FLIGHT_SEAT_CONFIGURATION = "/fetch/{flightId}";
 
 	public static final String UPDATE_FLIGHT_SEAT_CONFIGURATION = "/update/{id}";
 	
@@ -42,7 +44,7 @@ public class UrlConstants {
 
 	public static final String SEARCH_FLIGHTS = "/searchFlights";
 	
-	public static final String FETCH_AIRPORT_BY_CITY = "/city/fetchAirportByCity/{cityCode}";
+	public static final String FETCH_AIRPORT_BY_CITY = "/admin/city/fetchAirportByCity/{cityCode}";
 	
-	public static final String FETCH_AIRLINE_BY_ID = "/airline/{airlineId}";
+	public static final String FETCH_AIRLINE_BY_ID = "/admin/airline/{airlineId}";
 }

@@ -40,5 +40,5 @@ public class UrlConstants {
 	
 	public static final String SEATS = "/seats";
 	
-	public static final String GENERIC = "/";
+	public static final String SEAT_DETAILS = "/fetchDetails";
 }

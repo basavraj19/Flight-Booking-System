@@ -1,6 +1,6 @@
 package com.flightbooking.apigateway.utils;
 
-import org.springframework.http.HttpStatusCode;
+import org.springframework.http.HttpStatus;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,5 +23,5 @@ public class JsonResponseEntity<T> {
 
 	private Exception exception;
 
-	private HttpStatusCode statusCode;
+	private HttpStatus statusCode;
 }

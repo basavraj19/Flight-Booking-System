@@ -49,10 +49,10 @@ public class FlightSearchService {
 		String sourceCityCode = model.getSourceCityCode().trim().toUpperCase();
 		String destinationCityCode = model.getDestinationCityCode().trim().toUpperCase();
 
-		List<AirportResponseModel> sourceAirports = adminService.getAirportDetailsByCityCode(sourceCityCode).getBody();
+		List<AirportResponseModel> sourceAirports = adminService.getAirportDetailsByCityCode(sourceCityCode).getBody().getResult();
 
 		List<AirportResponseModel> destinationAirports = adminService.getAirportDetailsByCityCode(destinationCityCode)
-				.getBody();
+				.getBody().getResult();
 
 		List<Long> sourceAirportIds = getAirportIds(sourceAirports);
 		List<Long> destinationAirportIds = getAirportIds(destinationAirports);
@@ -109,7 +109,7 @@ public class FlightSearchService {
 
 		List<Long> airlineIds = flightDetails.stream().map(Flight::getAirlineId).distinct().toList();
 
-		List<AirlineResponseModel> airlines = adminService.getAirlineById(airlineIds).getBody();
+		List<AirlineResponseModel> airlines = adminService.getAirlineById(airlineIds).getBody().getResult();
 
 		Map<Long, Flight> flightMap = flightDetails.stream()
 				.collect(Collectors.toMap(Flight::getId, Function.identity()));

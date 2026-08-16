@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.flightbooking.flight.dto.FlightSeatConfigurationRequestModel;
@@ -47,7 +46,7 @@ public class FlightSeatConfigurationController {
 
 	@GetMapping(UrlConstants.GET_FLIGHT_SEAT_CONFIGURATION)
 	public ResponseEntity<JsonResponseEntity<List<FlightSeatConfiguration>>> getFlightSeatConfiguration(
-			@RequestParam final Long flightId) {
+			@PathVariable(StringConstants.FLIGHT_ID) final Long flightId) {
 
 		JsonResponseEntity<List<FlightSeatConfiguration>> response = new JsonResponseEntity<>();
 
