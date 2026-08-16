@@ -63,6 +63,10 @@ public class FlightSeatConfigurationService {
 
 		List<FlightSeatConfiguration> data = flightSeatConfigurationRepository.findByFlightId(flightId);
 
+		if (data.isEmpty()) {
+			throw new ResourceNotFoundException("Records not found.");
+		}
+
 		return data;
 	}
 

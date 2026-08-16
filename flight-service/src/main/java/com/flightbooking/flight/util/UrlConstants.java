@@ -44,7 +44,7 @@ public class UrlConstants {
 
 	public static final String SEARCH_FLIGHTS = "/searchFlights";
 	
-	public static final String FETCH_AIRPORT_BY_CITY = "/admin/city/fetchAirportByCity/{cityCode}";
+	public static final String FETCH_AIRPORT_BY_CITY = "/admin/airport/fetchAirportByCity/{cityCode}";
 	
-	public static final String FETCH_AIRLINE_BY_ID = "/admin/airline/{airlineId}";
+	public static final String FETCH_AIRLINE_BY_ID = "/admin/airline/{airlineIds}";
 }

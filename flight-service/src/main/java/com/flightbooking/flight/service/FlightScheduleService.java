@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,13 +15,18 @@ import com.flightbooking.flight.dto.FlightScheduleRequest;
 import com.flightbooking.flight.dto.FlightScheduleResponse;
 import com.flightbooking.flight.entity.Flight;
 import com.flightbooking.flight.entity.FlightSchedule;
+import com.flightbooking.flight.exception.AdminServiceException;
 import com.flightbooking.flight.exception.InvalidInputException;
 import com.flightbooking.flight.exception.ResourceNotFoundException;
 import com.flightbooking.flight.repository.FlightRepository;
 import com.flightbooking.flight.repository.FlightScheduleRepository;
 import com.flightbooking.flight.util.CommonUtils;
+import com.flightbooking.flight.util.JsonResponseEntity;
 import com.flightbooking.flight.util.NumericConstants;
 import com.flightbooking.flight.util.StringConstants;
+
+import feign.FeignException;
+
 import com.flightbooking.flight.client.AdminService;
 
 @Service
@@ -133,11 +139,9 @@ public class FlightScheduleService {
 		Flight flightDetails = flightRepository.findById(model.getFlightId())
 				.orElseThrow(() -> new ResourceNotFoundException("Invalid Flight Id."));
 
-		AirportResponseModel sourceAirport = adminService.getAirportDetailsById(model.getSourceAirportId()).getBody()
-				.getResult();
+		AirportResponseModel sourceAirport = getAirport(model.getSourceAirportId());
 
-		AirportResponseModel destinationAirport = adminService.getAirportDetailsById(model.getDestinationAirportId())
-				.getBody().getResult();
+		AirportResponseModel destinationAirport = getAirport(model.getDestinationAirportId());
 
 		if (sourceAirport.getCityId().equals(destinationAirport.getCityId())) {
 			throw new InvalidInputException("Source and destination cities cannot be same.");
@@ -155,6 +159,31 @@ public class FlightScheduleService {
 		referenceMap.put(StringConstants.AIRPORT_DETAILS, airportDetailsMap);
 
 		return referenceMap;
+	}
+
+	private AirportResponseModel getAirport(Long airportId) {
+
+		try {
+
+			ResponseEntity<JsonResponseEntity<AirportResponseModel>> response = adminService
+					.getAirportDetailsById(airportId);
+
+			if (response == null || response.getBody() == null) {
+				throw new AdminServiceException("No response received from Admin Service");
+			}
+
+			JsonResponseEntity<AirportResponseModel> body = response.getBody();
+
+			if (body.getResult() == null) {
+				throw new AdminServiceException("Airport not found for ID: " + airportId);
+			}
+
+			return body.getResult();
+
+		} catch (FeignException.NotFound e) {
+
+			throw new AdminServiceException("Airport not found for ID: " + airportId);
+		}
 	}
 
 	@Transactional(readOnly = true)

@@ -67,4 +67,17 @@ public class GlobalExceptionHandler {
 
 		return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
+
+	@ExceptionHandler(AdminServiceException.class)
+	public ResponseEntity<JsonResponseEntity<?>> handleAdminServiceException(final AdminServiceException exception) {
+		JsonResponseEntity<?> response = new JsonResponseEntity<>();
+
+		response.setStatus(StringConstants.failed);
+		response.setResult(null);
+		response.setMessage(exception.getMessage());
+		response.setStatusCode(HttpStatus.NOT_FOUND);
+		response.setException(null);
+
+		return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+	}
 }

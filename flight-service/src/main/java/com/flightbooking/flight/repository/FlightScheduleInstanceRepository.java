@@ -18,10 +18,18 @@ public interface FlightScheduleInstanceRepository extends JpaRepository<FlightSc
 	boolean existsByFlightScheduleIdAndTravelDateAndIdNot(Long flightScheduleId, LocalDate travelDate, Long id);
 
 	@Query(nativeQuery = true, value = """
-			SELECT ID,
-			       FLIGHT_SCHEDULE_ID,
-			       TRAVEL_DATE,
-			       STATUS
+			 SELECT ID,
+               CREATED_BY,
+               CREATED_AT,
+               MODIFIED_BY,
+               MODIFIED_AT,
+               FLIGHT_SCHEDULE_ID,
+               TRAVEL_DATE,
+               ACTUAL_DEPARTURE_TIME,
+               ACTUAL_ARRIVAL_TIME,
+               STATUS,
+               GATE,
+               TERMINAL
 			FROM FLIGHT_SCHEDULE_INSTANCE
 			WHERE FLIGHT_SCHEDULE_ID IN (:flightScheduleIds)
 			  AND TRAVEL_DATE BETWEEN :startDate AND :endDate

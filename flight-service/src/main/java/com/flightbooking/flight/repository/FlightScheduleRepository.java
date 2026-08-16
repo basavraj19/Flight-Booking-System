@@ -17,13 +17,19 @@ public interface FlightScheduleRepository extends JpaRepository<FlightSchedule, 
 	public Long getFlightIdByFlightScheduleId(@Param("flightScheduleId") final Long flightScheduleId);
 
 	@Query(nativeQuery = true, value = """
-			SELECT ID,
-			       FLIGHT_ID,
-			       SOURCE_AIRPORT_ID,
-			       DESTINATION_AIRPORT_ID,
-			       DEPARTURE_TIME,
-			       ARRIVAL_TIME,
-			       ARRIVAL_DAY_OFFSET
+			  SELECT ID,
+               CREATED_BY,
+               CREATED_AT,
+               MODIFIED_BY,
+               MODIFIED_AT,
+               FLIGHT_ID,
+               SOURCE_AIRPORT_ID,
+               DESTINATION_AIRPORT_ID,
+               DEPARTURE_TIME,
+               ARRIVAL_TIME,
+               EFFECTIVE_FROM,
+               EFFECTIVE_TO,
+               ARRIVAL_DAY_OFFSET
 			FROM FLIGHT_SCHEDULE
 			WHERE SOURCE_AIRPORT_ID IN (:sourceAirportIds)
 			  AND DESTINATION_AIRPORT_ID IN (:destinationAirportIds)
