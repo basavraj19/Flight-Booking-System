@@ -28,6 +28,7 @@
 		<module>auth-service</module>
 		<module>eureka-server</module>
 		<module>flight-service</module>
+		<module>booking-service</module>
 	</modules>
 
 	<dependencies>
