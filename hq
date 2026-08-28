@@ -1,0 +1,141 @@
+[33mcommit ef4f0d580002d39d0b32b6b9543fd591faf6a486[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmaster[m[33m)[m
+Author: Basavraj Birajdar <basavrajbirajdar2001@gmail.com>
+Date:   Sat Aug 29 00:31:08 2026 +0530
+
+    Introduced new booking service, added basic setp and layered floder structure for this service.
+
+[33mcommit 2f3634a82ec7bb56d87d9bc92b7d753c396c804f[m[33m ([m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: Basavraj Birajdar <basavrajbirajdar2001@gmail.com>
+Date:   Mon Aug 17 02:01:37 2026 +0530
+
+    Complete end-to-end testing of Flight Service APIs and fix identified defects.
+
+[33mcommit fc983f34c5fd0a0aff1bd907a46ebebecf5f663a[m
+Author: Basavraj Birajdar <basavrajbirajdar2001@gmail.com>
+Date:   Sun Aug 16 17:18:25 2026 +0530
+
+    Tested Admin Service and Flight service API's fixed identified defects and observations
+
+[33mcommit a2669edd5c5a68f3c9ada890733c2fe8486bbfc8[m
+Author: Basavraj Birajdar <basavrajbirajdar2001@gmail.com>
+Date:   Sun Aug 16 02:55:33 2026 +0530
+
+    feat: add city-to-city flight search with seat availability
+
+[33mcommit 1dc6b8f5d84cfdb32feb5102665d2dc3f76d7951[m
+Author: Basavraj Birajdar <basavrajbirajdar2001@gmail.com>
+Date:   Sat Aug 15 18:14:38 2026 +0530
+
+    feat: implement flight schedule instance and seat availability
+
+[33mcommit 9928d59c6c7098eb14b545f40b7374821df6170c[m
+Author: Basavraj Birajdar <basavrajbirajdar2001@gmail.com>
+Date:   Wed Aug 12 14:30:13 2026 +0530
+
+    feat: add seat configuration and seat inventory management for flight schedules
+    
+    - Add FlightSeatConfiguration entity, repository, and service for seat class/pricing setup
+    - Add FlightSeatInventoryController, repository, and service to manage seat availability per flight schedule instance
+    - Update FlightSchedule, FlightScheduleInstance, and FlightSeatInventory entities to support seat config linkage
+    - Update FlightScheduleRepository/Service and UrlConstants for new endpoints
+    - Update admin-service DB create queries for schema changes
+
+[33mcommit d22c80c771780150edf75dec3897fb9ae9a100d1[m
+Author: Basavraj Birajdar <basavrajbirajdar2001@gmail.com>
+Date:   Sun Aug 2 16:51:56 2026 +0530
+
+    feat: implement Get All Seat Types API to retrieve static seat class data
+
+[33mcommit c93c9ab6262c9cb4cdde7d90d8ec558d18f17f30[m
+Author: Basavraj Birajdar <basavrajbirajdar2001@gmail.com>
+Date:   Sun Aug 2 16:07:16 2026 +0530
+
+    feat: migrate Flight and FlightScheduleInstance CRUD to Flight Service and integrate OpenFeign for inter-service communication
+    
+    - Moved Flight and FlightScheduleInstance CRUD operations from Admin Service to Flight Service
+    - Implemented OpenFeign in Flight Service for communication with Admin Service
+    - Enabled inter-service communication between Admin Service and Flight Service
+
+[33mcommit 0bfa15cc8485d2db4a66d9f676864b48bc00b4b1[m
+Author: Basavraj Birajdar <basavrajbirajdar2001@gmail.com>
+Date:   Sun Aug 2 02:09:46 2026 +0530
+
+    Created flight related entities including FlightScheduleInstance, FlightSeatInventry, SeatClass and implemented corresponding repository layer.
+
+[33mcommit a490a69c187ddb9b8d5202f2cd1a3492663aa87b[m
+Author: Basavraj Birajdar <basavrajbirajdar2001@gmail.com>
+Date:   Sat Aug 1 20:54:19 2026 +0530
+
+    Added Flight Service, registered it as eureka client and completed basic project setup.
+
+[33mcommit da556094b1cb267fb4d61a0651c2893770199e33[m
+Author: Basavraj Birajdar <basavrajbirajdar2001@gmail.com>
+Date:   Thu Jul 30 11:55:52 2026 -0700
+
+    feat: add Eureka Server microservice for centralized service discovery and configure API Gateway, Auth Service, Admin Service, and other client services for Eureka registration
+
+[33mcommit a01e25d5242ad7cda599c5c9e972dd723c7f24ad[m
+Author: Basavraj <basavrajbirajdar2001@gmail.com>
+Date:   Wed Jul 22 01:15:53 2026 +0530
+
+    Added JWT Authentication for admin service and implemented changes to insert logged In user name as auditor
+
+[33mcommit f6dbe6734236dee29687957bea48cd1ed9495805[m
+Author: Basavraj <basavrajbirajdar2001@gmail.com>
+Date:   Mon Jul 20 23:48:03 2026 +0530
+
+    Fixed Unauthorized user/Invalid JWT token defect.
+
+[33mcommit bad816a770e379bd58f7c8ec4b18bf9b35712301[m
+Author: Basavraj <basavrajbirajdar2001@gmail.com>
+Date:   Mon Jul 20 00:00:32 2026 +0530
+
+    Implemented API Gateway, added routing for admin and auth service.
+
+[33mcommit 92740db8dd241f6f95f07f32cd40fbb34a333675[m
+Author: Basavraj <basavrajbirajdar2001@gmail.com>
+Date:   Sun Jul 19 00:50:48 2026 +0530
+
+    Removed UserAccount entity and corresponding repository from admin service.
+
+[33mcommit 01420dbd800c3c8f9cff4e385f4e5c9ee8aa8826[m
+Author: Basavraj <basavrajbirajdar2001@gmail.com>
+Date:   Sun Jul 19 00:44:15 2026 +0530
+
+    Implemented /updateuserdetails and /getuserdetails api and handled Invalid and expired token senario using AutenticationEntryPoint.
+
+[33mcommit 401ec5c37208f57db979178a31ea788068dc6da1[m
+Author: Basavraj <basavrajbirajdar2001@gmail.com>
+Date:   Sat Jul 18 17:16:27 2026 +0530
+
+    Implementated request validation: used @Valid and @NotBlank validation for validating incoming request
+
+[33mcommit 3c20045d4f962dd8705e04743eb1faa0134641e9[m
+Author: Basavraj <basavrajbirajdar2001@gmail.com>
+Date:   Sat Jul 18 16:25:27 2026 +0530
+
+     Implemented Update password and deactivate user functionality in auth service and fixed observations in signUp and login API.
+
+[33mcommit 597020313b0f0ca29421ceacf93acdec58332417[m
+Author: Basavraj <basavrajbirajdar2001@gmail.com>
+Date:   Sat Jul 18 01:58:42 2026 +0530
+
+    Implemented JWT Authentication in auth service and implemented signUp and login API
+
+[33mcommit 966d1abd52150bac307bc7f6859c74bde28215fc[m
+Author: Basavraj <basavrajbirajdar2001@gmail.com>
+Date:   Fri Jul 17 00:52:23 2026 +0530
+
+    Added Inital set up of authentication service.
+
+[33mcommit 424be915e11ee1b852517bb4c4b0eb2a18c97643[m
+Author: Basavraj <basavrajbirajdar2001@gmail.com>
+Date:   Fri Jul 17 00:11:13 2026 +0530
+
+    Added layered architecture setup to api gateway service.
+
+[33mcommit a192702e1fc34671d24a31315b46800c419abb2d[m
+Author: Basavraj <basavrajbirajdar2001@gmail.com>
+Date:   Fri Jul 17 00:02:16 2026 +0530
+
+    Added Initial setup of Multi-Module Spring Boot project
