@@ -80,4 +80,17 @@ public class GlobalExceptionHandler {
 
 		return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
 	}
+
+	@ExceptionHandler(BusinessException.class)
+	public ResponseEntity<JsonResponseEntity<?>> handlBusinessException(final BusinessException exception) {
+		JsonResponseEntity<?> response = new JsonResponseEntity<>();
+
+		response.setStatus(StringConstants.failed);
+		response.setResult(null);
+		response.setMessage(exception.getMessage());
+		response.setStatusCode(HttpStatus.CONFLICT);
+		response.setException(null);
+
+		return new ResponseEntity<>(response, HttpStatus.CONFLICT);
+	}
 }

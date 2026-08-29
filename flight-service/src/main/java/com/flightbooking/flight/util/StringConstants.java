@@ -23,6 +23,8 @@ public class StringConstants {
 	public static final String FLIGHT_ID = "flightId";
 
 	public static final String FLIGHT_NUMBER = "flightNumber";
+	
+	public static final String Id = "id";
 
 	public static final String flightNumberRegex = "^[a-zA-Z0-9]+$";
 

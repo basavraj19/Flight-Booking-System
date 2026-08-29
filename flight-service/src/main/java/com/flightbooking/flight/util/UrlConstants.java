@@ -41,10 +41,16 @@ public class UrlConstants {
 	public static final String UPDATE_FLIGHT_SEAT_CONFIGURATION = "/update/{id}";
 	
 	public static final String UPDATE_FLIGHT_SCHEDULE_INSTANCE_PRICE = "/updateFlightPrice";
+	
+	public static final String FETCH_FLIGHT_SCHEDULE_INSTANCE_BY_ID = "/{id}";
 
 	public static final String SEARCH_FLIGHTS = "/searchFlights";
 	
 	public static final String FETCH_AIRPORT_BY_CITY = "/admin/airport/fetchAirportByCity/{cityCode}";
 	
 	public static final String FETCH_AIRLINE_BY_ID = "/admin/airline/{airlineIds}";
+	
+	public static final String FLIGHT_SEAT_AVAILABILITY = "/flightSeatAvailability";
+	
+	public static final String RESERVE = "/reserve";
 }

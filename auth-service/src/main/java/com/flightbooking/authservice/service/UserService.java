@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import com.flightbooking.authservice.dto.LoginRequestDto;
 import com.flightbooking.authservice.dto.UpdatePasswordRequest;
@@ -138,5 +139,18 @@ public class UserService implements UserDetailsService {
 		return UpdateUserRequestDto.builder().username(existingUser.getUsername())
 				.firstName(existingUser.getFirstName()).lastName(existingUser.getLastName())
 				.phoneNumber(existingUser.getPhoneNumber()).build();
+	}
+
+	@Transactional(readOnly = true)
+	public Long getUserIdByUsername(final String username) {
+
+		if (!StringUtils.hasText(username)) {
+			throw new InvalidInputException("Username is required.");
+		}
+
+		UserAccount user = userRepository.findUserByUsername(username)
+				.orElseThrow(() -> new UserNotFoundException(username + " not found."));
+
+		return user.getId();
 	}
 }

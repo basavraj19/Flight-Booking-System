@@ -10,9 +10,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.flightbooking.flight.dto.FlightScheduleInstanceDetailsModel;
 import com.flightbooking.flight.dto.FlightSeatPriceModel;
+import com.flightbooking.flight.dto.SeatAvailabilityRequestModel;
+import com.flightbooking.flight.dto.SeatAvailabilityResponseModel;
 import com.flightbooking.flight.entity.FlightScheduleInstance;
 import com.flightbooking.flight.entity.FlightSeatAvailability;
 import com.flightbooking.flight.entity.FlightSeatConfiguration;
+import com.flightbooking.flight.exception.BusinessException;
 import com.flightbooking.flight.exception.InvalidInputException;
 import com.flightbooking.flight.exception.ResourceNotFoundException;
 import com.flightbooking.flight.repository.FlightScheduleRepository;
@@ -115,5 +118,35 @@ public class FlightSeatAvailabilityService {
 		}
 
 		return flightSeatAvailabilityRepository.findByFlightScheduleInstanceIdIn(flightScheduleInstanceIds);
+	}
+
+	@Transactional
+	public SeatAvailabilityResponseModel reserve(final SeatAvailabilityRequestModel model) {
+
+		if (model == null) {
+			throw new InvalidInputException("Invalid Request.");
+		}
+
+		if (model.getNumberOfSeats() <= 0) {
+			throw new InvalidInputException("Number of seats must be greater than zero.");
+		}
+
+		int updatedRows = flightSeatAvailabilityRepository.reserveSeats(model.getFlightScheduleInstanceId(),
+				model.getSeatClassId(), model.getNumberOfSeats());
+
+		if (updatedRows == 0) {
+			throw new BusinessException("Insufficient seats available.");
+		}
+
+		FlightSeatAvailability availability = flightSeatAvailabilityRepository
+				.findByFlightScheduleInstanceIdAndSeatClassId(model.getFlightScheduleInstanceId(),
+						model.getSeatClassId())
+				.get();
+
+		return SeatAvailabilityResponseModel.builder()
+				.flightScheduleInstanceId(availability.getFlightScheduleInstanceId())
+				.seatClassId(availability.getSeatClassId()).numberOfSeats(model.getNumberOfSeats())
+				.availableSeats(availability.getTotalSeats() - availability.getBookedSeats())
+				.pricePerSeat(availability.getPrice()).build();
 	}
 }

@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.flightbooking.flight.dto.FlightScheduleInstanceDetailsModel;
 import com.flightbooking.flight.dto.FlightScheduleInstanceRequestModel;
+import com.flightbooking.flight.dto.FlightScheduleInstanceResponseModel;
 import com.flightbooking.flight.dto.UpdateFlightPriceRequestModel;
 import com.flightbooking.flight.dto.UpdateFlightScheduleInstanceRequestModel;
 import com.flightbooking.flight.dto.UpdateFlightScheduleInstanceStatusRequestModel;
@@ -160,5 +161,27 @@ public class FlightScheduleInstanceService {
 			final LocalDate startDate, final LocalDate endDate) {
 
 		return flightScheduleInstanceRepository.getFlightSchedulesInstances(flightScheduleIds, startDate, endDate);
+	}
+
+	@Transactional(readOnly = true)
+	public FlightScheduleInstanceResponseModel getFlightScheduleInstanceById(final Long flightScheduleInstanceId) {
+
+		if (flightScheduleInstanceId == null || flightScheduleInstanceId <= NumericConstants.ZERO) {
+			throw new InvalidInputException("Invalid Flight Schedule Instance Id.");
+		}
+
+		FlightScheduleInstance instance = flightScheduleInstanceRepository.findById(flightScheduleInstanceId)
+				.orElseThrow(() -> new ResourceNotFoundException("Flight Schedule Instance not found."));
+
+		return mapToResponse(instance);
+	}
+
+	private FlightScheduleInstanceResponseModel mapToResponse(final FlightScheduleInstance instance) {
+
+		return FlightScheduleInstanceResponseModel.builder().recordId(instance.getId())
+				.flightScheduleId(instance.getFlightScheduleId()).travelDate(instance.getTravelDate())
+				.actualDepartureTime(instance.getActualDepartureTime())
+				.actualArrivalTime(instance.getActualArrivalTime()).status(instance.getStatus().toString())
+				.gate(instance.getGate()).terminal(instance.getTerminal()).build();
 	}
 }

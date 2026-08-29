@@ -15,4 +15,6 @@ public class UrlConstants {
 	public static final String updateUser = "/updateUser";
 
 	public static final String deleteUser = "/deactivate";
+	
+	public static final String FetchUser = "/{username}";
 }
