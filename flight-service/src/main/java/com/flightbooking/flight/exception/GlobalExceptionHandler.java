@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.flightbooking.flight.util.JsonResponseEntity;
 import com.flightbooking.flight.util.StringConstants;
 
+import feign.RetryableException;
 import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 
@@ -119,5 +120,19 @@ public class GlobalExceptionHandler {
 		}
 
 		return new ResponseEntity<>(response, status);
+	}
+
+	@ExceptionHandler(RetryableException.class)
+	public ResponseEntity<JsonResponseEntity<?>> handleFeignRetryableException(final RetryableException exception) {
+
+		JsonResponseEntity<?> response = new JsonResponseEntity<>();
+
+		response.setStatus(StringConstants.failed);
+		response.setMessage("The requested service is currently unavailable. Please try again later.");
+		response.setResult(null);
+		response.setException(null);
+		response.setStatusCode(HttpStatus.SERVICE_UNAVAILABLE);
+
+		return new ResponseEntity<>(response, HttpStatus.SERVICE_UNAVAILABLE);
 	}
 }
