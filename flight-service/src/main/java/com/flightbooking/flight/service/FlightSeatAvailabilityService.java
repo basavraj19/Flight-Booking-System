@@ -138,10 +138,36 @@ public class FlightSeatAvailabilityService {
 			throw new BusinessException("Insufficient seats available.");
 		}
 
+		return buildSeatAvailabilityResponse(model);
+	}
+
+	@Transactional
+	public SeatAvailabilityResponseModel release(final SeatAvailabilityRequestModel model) {
+
+		if (model == null) {
+			throw new InvalidInputException("Invalid Request.");
+		}
+
+		if (model.getNumberOfSeats() <= 0) {
+			throw new InvalidInputException("Number of seats must be greater than zero.");
+		}
+
+		int updatedRows = flightSeatAvailabilityRepository.releaseSeats(model.getFlightScheduleInstanceId(),
+				model.getSeatClassId(), model.getNumberOfSeats());
+
+		if (updatedRows == 0) {
+			throw new BusinessException("Unable to release seats.");
+		}
+
+		return buildSeatAvailabilityResponse(model);
+	}
+
+	private SeatAvailabilityResponseModel buildSeatAvailabilityResponse(final SeatAvailabilityRequestModel model) {
+
 		FlightSeatAvailability availability = flightSeatAvailabilityRepository
 				.findByFlightScheduleInstanceIdAndSeatClassId(model.getFlightScheduleInstanceId(),
 						model.getSeatClassId())
-				.get();
+				.orElseThrow(() -> new BusinessException("Seat availability not found."));
 
 		return SeatAvailabilityResponseModel.builder()
 				.flightScheduleInstanceId(availability.getFlightScheduleInstanceId())

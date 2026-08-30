@@ -53,4 +53,6 @@ public class UrlConstants {
 	public static final String FLIGHT_SEAT_AVAILABILITY = "/flightSeatAvailability";
 	
 	public static final String RESERVE = "/reserve";
+	
+	public static final String RELEASE = "/release";
 }

@@ -24,6 +24,7 @@ public interface FlightService {
 	public ResponseEntity<JsonResponseEntity<SeatAvailabilityResponseModel>> reserveSeats(
 			@RequestBody SeatAvailabilityRequestModel model);
 
-	@PostMapping(UrlConstants.RESERVE_SEATS)
-	public ResponseEntity<JsonResponseEntity<Void>> releaseSeats(@RequestBody SeatAvailabilityRequestModel model);
+	@PostMapping(UrlConstants.RELEASE_SEATS)
+	public ResponseEntity<JsonResponseEntity<SeatAvailabilityResponseModel>> releaseSeats(
+			@RequestBody SeatAvailabilityRequestModel model);
 }

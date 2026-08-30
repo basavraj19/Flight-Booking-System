@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import com.flightbooking.booking.client.AdminService;
 import com.flightbooking.booking.client.AuthService;
@@ -23,6 +24,7 @@ import com.flightbooking.booking.entity.Booking;
 import com.flightbooking.booking.entity.BookingPassenger;
 import com.flightbooking.booking.exception.InvalidInputException;
 import com.flightbooking.booking.exception.ResourceNotFoundException;
+import com.flightbooking.booking.repository.BookingPassengerRepository;
 import com.flightbooking.booking.repository.BookingRepository;
 import com.flightbooking.booking.util.BookingStatus;
 import com.flightbooking.booking.util.CommonUtils;
@@ -41,6 +43,8 @@ public class BookingService {
 	private final PassengerService passengerService;
 
 	private final BookingRepository bookingRepository;
+
+	private final BookingPassengerRepository bookingPassengerRepository;
 
 	private final FlightService flightService;
 
@@ -120,7 +124,7 @@ public class BookingService {
 			throw new InvalidInputException("Invalid Seat Class Id.");
 		}
 
-		if (CommonUtils.isValid(request.getPassengers())) {
+		if (!CommonUtils.isValid(request.getPassengers())) {
 			throw new InvalidInputException("Please provide valid passenger details.");
 		}
 
@@ -174,5 +178,27 @@ public class BookingService {
 				.pricePerSeat(booking.getPricePerSeat()).totalAmount(booking.getTotalAmount())
 				.bookingStatus(booking.getBookingStatus().toString())
 				.paymentStatus(booking.getPaymentStatus().toString()).passengers(passengers).build();
+	}
+
+	@Transactional(readOnly = true)
+	public BookingResponseModel getBookingDetailsByBookingRefNo(final String bookingRefNo) {
+
+		if (!StringUtils.hasText(bookingRefNo)) {
+			throw new InvalidInputException("Invalid Booking Reference Number.");
+		}
+
+		final String bookingReference = bookingRefNo.trim();
+
+		Booking bookingDetails = bookingRepository.findBookingBybookingReference(bookingReference).orElseThrow(
+				() -> new ResourceNotFoundException("Booking with reference " + bookingReference + " not found."));
+
+		List<BookingPassenger> passengerDetails = bookingPassengerRepository
+				.findPasssengerDetailsByBookingId(bookingDetails.getId());
+
+		if (passengerDetails.isEmpty()) {
+			throw new ResourceNotFoundException("Passengers for booking " + bookingReference + " not found.");
+		}
+
+		return mapToBookingResponse(bookingDetails, passengerDetails);
 	}
 }

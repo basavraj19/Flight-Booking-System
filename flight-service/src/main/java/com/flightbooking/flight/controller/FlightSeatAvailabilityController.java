@@ -39,4 +39,21 @@ public class FlightSeatAvailabilityController {
 
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
+
+	@PostMapping(UrlConstants.RELEASE)
+	public ResponseEntity<JsonResponseEntity<SeatAvailabilityResponseModel>> releaseSeats(
+			@RequestBody final SeatAvailabilityRequestModel request) {
+
+		JsonResponseEntity<SeatAvailabilityResponseModel> response = new JsonResponseEntity<>();
+
+		SeatAvailabilityResponseModel result = flightSeatAvailabilityService.release(request);
+
+		response.setStatus(StringConstants.success);
+		response.setMessage(StringConstants.recordUpdateSuccessMessage);
+		response.setResult(result);
+		response.setException(null);
+		response.setStatusCode(HttpStatus.OK);
+
+		return new ResponseEntity<>(response, HttpStatus.OK);
+	}
 }

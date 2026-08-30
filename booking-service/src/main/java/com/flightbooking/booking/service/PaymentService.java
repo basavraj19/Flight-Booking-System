@@ -15,5 +15,8 @@ public class PaymentService {
 		// Mock payment processing
 		return PaymentResponseModel.builder().paymentStatus(PaymentStatus.SUCCESS)
 				.message("Payment processed successfully.").build();
+		
+		//return PaymentResponseModel.builder().paymentStatus(PaymentStatus.FAILED)
+			//	.message("Something Went Wrong.").build();
 	}
 }

@@ -16,7 +16,11 @@ public class UrlConstants {
 
 	public static final String RESERVE_SEATS = "/flight/flightSeatAvailability/reserve";
 	
+	public static final String RELEASE_SEATS = "/flight/flightSeatAvailability/release";
+	
 	public static final String  AUTH_SERVICE = "AUTH-SERVICE";
 	
 	public static final String GET_USER_BY_USERNAME = "/auth/user/{username}";
+	
+	public static final String FETCH_BOOKING_DETAILS_BY_BOOKING_REF_NO = "/fetchDetails";
 }

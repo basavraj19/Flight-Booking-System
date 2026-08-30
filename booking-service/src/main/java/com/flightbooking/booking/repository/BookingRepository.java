@@ -1,5 +1,7 @@
 package com.flightbooking.booking.repository;
 
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -16,4 +18,6 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
 			+ " WHERE ID = :bookingId")
 	int updateBookingStatus(@Param("bookingStatus") String bookingStatus, @Param("paymentStatus") String paymentStatus,
 			@Param("bookingId") Long bookingId);
+
+	Optional<Booking> findBookingBybookingReference(final String bookingReference);
 }

@@ -7,9 +7,16 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.flightbooking.booking.util.JsonResponseEntity;
 import com.flightbooking.booking.util.StringConstants;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import feign.FeignException;
+import lombok.RequiredArgsConstructor;
 
 @RestControllerAdvice
+@RequiredArgsConstructor
 public class GlobalExceptionHandler {
+
+	private final ObjectMapper objectMapper;
 
 	@ExceptionHandler(InvalidInputException.class)
 	public ResponseEntity<JsonResponseEntity<?>> handleInvalidInputException(final InvalidInputException exception) {
@@ -37,5 +44,25 @@ public class GlobalExceptionHandler {
 		response.setException(null);
 
 		return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+	}
+
+	@ExceptionHandler(FeignException.class)
+	public ResponseEntity<JsonResponseEntity<?>> handleFeignException(final FeignException exception) {
+
+		HttpStatus status = HttpStatus.valueOf(exception.status());
+
+		JsonResponseEntity<?> response = new JsonResponseEntity<>();
+
+		try {
+			response = objectMapper.readValue(exception.contentUTF8(), JsonResponseEntity.class);
+		} catch (Exception e) {
+			response.setStatus(StringConstants.failed);
+			response.setMessage("Unable to process the request.");
+			response.setResult(null);
+			response.setException(null);
+			response.setStatusCode(status);
+		}
+
+		return new ResponseEntity<>(response, status);
 	}
 }
