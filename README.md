@@ -1,4 +1,4 @@
-#Flight Booking System
+Flight Booking System
 Java | Spring Boot | Microservices | Kafka | Redis | MySQL
 
 Architecture
